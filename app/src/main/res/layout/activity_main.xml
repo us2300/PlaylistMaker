@@ -30,6 +30,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/mainMenuSearchButton"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/main_horizontal_margin"
@@ -46,6 +47,7 @@
         app:cornerRadius="16dp"/>
 
     <Button
+        android:id="@+id/mainMenuMediaButton"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/main_horizontal_margin"
@@ -62,6 +64,7 @@
         app:cornerRadius="16dp"/>
 
     <Button
+        android:id="@+id/mainMenuSettingsButton"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/main_horizontal_margin"
