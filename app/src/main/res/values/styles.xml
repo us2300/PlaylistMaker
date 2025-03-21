@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ScreenTitle">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TitleMainMenu">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:paddingHorizontal">38dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">@dimen/horizontal_padding</item>
+    </style>
+
+    <style name="ButtonMainMenu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginHorizontal">@dimen/horizontal_padding</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="MenuItemSettingsMenu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingHorizontal">@dimen/horizontal_padding</item>
+        <item name="android:paddingVertical">24dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_settings_menu</item>
+    </style>
+
+</resources>
