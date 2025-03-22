@@ -1,0 +1,18 @@
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># Gradle files\r\n.gradle/\r\nbuild/\r\n\r\n# Local configuration file (sdk path, etc)\r\nlocal.properties\r\n\r\n# Log/OS Files\r\n*.log\r\n\r\n# Android Studio generated files and folders\r\ncaptures/\r\n.externalNativeBuild/\r\n.cxx/\r\n*.apk\r\noutput.json\r\n\r\n# IntelliJ\r\n*.iml\r\n.idea/\r\nmisc.xml\r\ndeploymentTargetDropDown.xml\r\nrender.experimental.xml\r\n\r\n# Keystore files\r\n*.jks\r\n*.keystore\r\n\r\n# Google Services (e.g. APIs or Firebase)\r\ngoogle-services.json\r\n\r\n# Android Profiling\r\n*.hprof\r\n\r\n#idea\r\n.idea
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitignore b/.gitignore
+--- a/.gitignore	(revision 0897179a92dc0dc8def074e918d5a657ab28ea8b)
++++ b/.gitignore	(date 1742659891747)
+@@ -17,7 +17,6 @@
+ 
+ # IntelliJ
+ *.iml
+-.idea/
+ misc.xml
+ deploymentTargetDropDown.xml
+ render.experimental.xml
