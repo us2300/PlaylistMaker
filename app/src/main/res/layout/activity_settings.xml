@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/screen_title_margin_bottom"
+        app:navigationIcon="@drawable/icon_arrow_back"
+        app:title="@string/settings"
+        app:titleTextAppearance="@style/ScreenTitle" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        style="@style/MenuItemSettingsMenu"
+        android:text="@string/dark_theme"
+        app:thumbTint="@color/switch_thumb_color"
+        app:trackTint="@color/switch_track_color"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/MenuItemSettingsMenu"
+        android:drawableEnd="@drawable/icon_share"
+        android:text="@string/share_app" />
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/MenuItemSettingsMenu"
+        android:drawableEnd="@drawable/icon_support"
+        android:text="@string/text_support" />
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/MenuItemSettingsMenu"
+        android:drawableEnd="@drawable/icon_arrow_forward"
+        android:text="@string/user_agreement" />
+
+</LinearLayout>

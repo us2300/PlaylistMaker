@@ -1,4 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:background="@color/blue"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/screen_title_margin_bottom"
+        app:title="@string/app_name"
+        app:titleTextColor="@color/white"
+        style="@style/TitleMainMenu"/>
+
+    <Button
+        android:id="@+id/mainMenuSearchButton"
+        style="@style/ButtonMainMenu"
+        android:text="@string/search"
+        app:cornerRadius="@dimen/button_corner_radius"
+        app:icon="@drawable/icon_search"
+        app:iconGravity="textStart"
+        app:iconTint="@color/black" />
+
+    <Button
+        android:id="@+id/mainMenuMediaButton"
+        style="@style/ButtonMainMenu"
+        android:text="@string/mediateka"
+        app:cornerRadius="@dimen/button_corner_radius"
+        app:icon="@drawable/icon_mediateka"
+        app:iconGravity="textStart"
+        app:iconTint="@color/black" />
+
+    <Button
+        android:id="@+id/mainMenuSettingsButton"
+        style="@style/ButtonMainMenu"
+        android:layout_marginBottom="28dp"
+        android:text="@string/settings"
+        app:cornerRadius="@dimen/button_corner_radius"
+        app:icon="@drawable/icon_settings"
+        app:iconGravity="textStart"
+        app:iconTint="@color/black" />
+
+</LinearLayout>
