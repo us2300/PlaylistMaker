@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
@@ -13,8 +14,30 @@
         app:title="@string/search"
         app:titleTextAppearance="@style/TitleTextAppearance" />
 
-    <EditText
-        style="@style/SearchEditText"
-        android:hint="@string/search" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/horizontal_margin">
+
+        <EditText
+            android:id="@+id/edit_text_search"
+            style="@style/SearchEditText"
+            android:hint="@string/search"
+            android:importantForAutofill="no"
+            android:inputType="text" />
+
+        <ImageView
+            android:id="@+id/clear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:paddingHorizontal="@dimen/search_x_horizontal_padding"
+            android:src="@drawable/icon_x"
+            app:tint="?attr/colorOnPrimaryFixedVariant"
+            tools:ignore="ContentDescription"
+            android:visibility="gone"
+            android:foreground="?attr/selectableItemBackground"/>
+
+    </FrameLayout>
 
 </LinearLayout>
