@@ -5,17 +5,13 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSecondaryVariant"
+    android:background="?attr/colorSecondary"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/screen_title_margin_bottom"
+        style="@style/MainMenuTitle"
         app:title="@string/app_name"
-        app:titleTextColor="?attr/colorOnSecondaryFixedVariant"
-        style="@style/TitleMainMenu"/>
+        app:titleTextAppearance="@style/TitleTextAppearance" />
 
     <Button
         android:id="@+id/mainMenuSearchButton"

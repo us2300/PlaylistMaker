@@ -1,15 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Цвета меню -->
+        <!-- Цвет фона -->
         <item name="colorPrimary">@color/yp_black</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorOnPrimaryFixedVariant">@color/white</item>
 
-        <!-- Цвета кнопок главного меню -->
-        <item name="colorSecondary">@color/white</item>
-        <item name="colorSecondaryVariant">@color/yp_black</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <item name="colorOnSecondaryFixedVariant">@color/white</item>
+        <!-- Цвета текста на фоне -->
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimaryFixed">@color/white</item>
+
+        <!-- Цвет фона поля ввода текста -->
+        <item name="colorOnPrimaryContainer">@color/white</item>
+
+        <!-- Цвет текста поля ввода -->
+        <item name="colorOnPrimaryFixedVariant">@color/yp_black</item>
+
+        <!--  Вариант цвета фона -->
+        <item name="colorSecondary">@color/yp_black</item>
+
+        <!-- Цвет текста на варианте фона -->
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Цвет кнопок главного меню -->
+        <item name="colorTertiary">@color/white</item>
+
+        <!-- Цвет текста на фоне кнопок главного меню -->
+        <item name="colorOnTertiary">@color/yp_black</item>
+
     </style>
 </resources>
