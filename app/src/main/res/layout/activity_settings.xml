@@ -28,18 +28,11 @@
 
         <TextView
             style="@style/TextSettingsMenu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/share_app" />
 
         <ImageView
             android:id="@+id/shareButton"
             style="@style/DrawableSettingsMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:foregroundGravity="center_vertical"
             android:src="@drawable/icon_share" />
     </LinearLayout>
 
@@ -51,18 +44,11 @@
 
         <TextView
             style="@style/TextSettingsMenu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/text_support" />
 
         <ImageView
             android:id="@+id/supportButton"
             style="@style/DrawableSettingsMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:foregroundGravity="center_vertical"
             android:src="@drawable/icon_support" />
     </LinearLayout>
 
@@ -74,19 +60,13 @@
 
         <TextView
             style="@style/TextSettingsMenu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/user_agreement" />
 
         <ImageView
             android:id="@+id/userAgreementButton"
             style="@style/DrawableSettingsMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:foregroundGravity="center_vertical"
             android:src="@drawable/icon_arrow_forward" />
+
     </LinearLayout>
 
 
