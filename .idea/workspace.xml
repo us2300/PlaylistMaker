@@ -39,16 +39,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d30f5c9-23ac-4a1a-891d-b15925285623" name="Changes" comment="Реализовал кнопки меню настроек&#10;Сверстал экран поиска">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/icon_x.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/SearchActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/SearchActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_search.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
-    </list>
+    <list default="true" id="1d30f5c9-23ac-4a1a-891d-b15925285623" name="Changes" comment="Добавил кнопку очистки текста на экран поиска и ее функционал" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -328,7 +319,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744834532620</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Добавил кнопку очистки текста на экран поиска и ее функционал">
+      <option name="closed" value="true" />
+      <created>1744844874551</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1744844874551</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -377,7 +376,8 @@
     <MESSAGE value="Добавил темную тему, шрифты" />
     <MESSAGE value="Добавил темную тему, шрифты" />
     <MESSAGE value="Реализовал кнопки меню настроек&#10;Сверстал экран поиска" />
-    <option name="LAST_COMMIT_MESSAGE" value="Реализовал кнопки меню настроек&#10;Сверстал экран поиска" />
+    <MESSAGE value="Добавил кнопку очистки текста на экран поиска и ее функционал" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавил кнопку очистки текста на экран поиска и ее функционал" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
