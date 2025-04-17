@@ -39,7 +39,14 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d30f5c9-23ac-4a1a-891d-b15925285623" name="Changes" comment="Добавил кнопку очистки текста на экран поиска и ее функционал" />
+    <list default="true" id="1d30f5c9-23ac-4a1a-891d-b15925285623" name="Changes" comment="Вынес атрибуты меню настроек в стили">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/SearchActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/SearchActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -134,26 +141,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Android App.app.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;A:/Projects/PlaylistMaker/app/src/main/res/font&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.completion&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Android App.app.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "dev",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "A:/Projects/PlaylistMaker/app/src/main/res/font",
+    "settings.editor.selected.configurable": "editor.preferences.completion"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;android.recentlyUsedThemes&quot;: [
-      &quot;Theme.MaterialComponents.DayNight.NoActionBar&quot;,
-      &quot;Theme.MaterialComponents&quot;
+  "keyToStringList": {
+    "android.recentlyUsedThemes": [
+      "Theme.MaterialComponents.DayNight.NoActionBar",
+      "Theme.MaterialComponents"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="android.template.1874655118">
       <recent name="com.example.playlistmaker" />
@@ -327,7 +334,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744844874551</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Вынес атрибуты меню настроек в стили">
+      <option name="closed" value="true" />
+      <created>1744918715038</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1744918715038</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -377,35 +392,20 @@
     <MESSAGE value="Добавил темную тему, шрифты" />
     <MESSAGE value="Реализовал кнопки меню настроек&#10;Сверстал экран поиска" />
     <MESSAGE value="Добавил кнопку очистки текста на экран поиска и ее функционал" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавил кнопку очистки текста на экран поиска и ее функционал" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/SearchActivity.kt</url>
-          <line>32</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/SearchActivity.kt</url>
-          <line>14</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Вынес атрибуты меню настроек в стили" />
+    <option name="LAST_COMMIT_MESSAGE" value="Вынес атрибуты меню настроек в стили" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">
       <map>
         <entry key="com.example.playlistmaker">
           <value>
-            <CheckInfo lastCheckTimestamp="1744829306550" />
+            <CheckInfo lastCheckTimestamp="1744918262775" />
           </value>
         </entry>
         <entry key="com.example.playlistmaker.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1744829306558" />
+            <CheckInfo lastCheckTimestamp="1744918262791" />
           </value>
         </entry>
       </map>

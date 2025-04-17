@@ -10,4 +10,5 @@
     <dimen name="search_text_vertical_padding">8.5dp</dimen>
     <dimen name="search_drawable_horizontal_padding">12dp</dimen>
     <dimen name="search_x_horizontal_padding">10dp</dimen>
+    <dimen name="status_bar_height">24dp</dimen>
 </resources>

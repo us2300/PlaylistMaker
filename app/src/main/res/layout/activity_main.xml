@@ -10,6 +10,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         style="@style/MainMenuTitle"
+        android:layout_marginTop="@dimen/status_bar_height"
         app:title="@string/app_name"
         app:titleTextAppearance="@style/TitleTextAppearance" />
 
