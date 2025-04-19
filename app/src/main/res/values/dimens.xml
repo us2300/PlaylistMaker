@@ -3,8 +3,12 @@
     <dimen name="horizontal_padding">16dp</dimen>
     <dimen name="horizontal_margin">16dp</dimen>
     <dimen name="text_size_medium">22sp</dimen>
-    <dimen name="text_size_settings_menu">16sp</dimen>
+    <dimen name="text_size_regular">16sp</dimen>
     <dimen name="end_margin">18dp</dimen>
     <dimen name="button_corner_radius">16dp</dimen>
     <dimen name="screen_title_margin_bottom">24dp</dimen>
+    <dimen name="search_text_vertical_padding">8.5dp</dimen>
+    <dimen name="search_drawable_horizontal_padding">12dp</dimen>
+    <dimen name="search_x_horizontal_padding">10dp</dimen>
+    <dimen name="status_bar_height">24dp</dimen>
 </resources>

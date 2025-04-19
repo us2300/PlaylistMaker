@@ -1,7 +1,35 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Прозрачный статус бар -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- Не дает содержимому экрана уходить под статус бар -->
+        <item name="android:windowTranslucentStatus">false</item>
+
+        <!-- Цвет фона -->
+        <item name="colorPrimary">@color/yp_black</item>
+
+        <!-- Цвета текста на фоне -->
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimaryFixed">@color/white</item>
+
+        <!-- Цвет фона поля ввода текста -->
+        <item name="colorOnPrimaryContainer">@color/white</item>
+
+        <!-- Цвет текста поля ввода -->
+        <item name="colorOnPrimaryFixedVariant">@color/yp_black</item>
+
+        <!--  Вариант цвета фона -->
+        <item name="colorSecondary">@color/yp_black</item>
+
+        <!-- Цвет текста на варианте фона -->
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Цвет кнопок главного меню -->
+        <item name="colorTertiary">@color/white</item>
+
+        <!-- Цвет текста на фоне кнопок главного меню -->
+        <item name="colorOnTertiary">@color/yp_black</item>
+
     </style>
 </resources>
