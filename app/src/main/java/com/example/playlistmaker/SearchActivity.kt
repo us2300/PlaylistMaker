@@ -9,6 +9,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 
 class SearchActivity : AppCompatActivity() {
@@ -19,19 +21,10 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val editText = findViewById<EditText>(R.id.edit_text_search)
-        val toolbar = findViewById<MaterialToolbar>(R.id.search_toolbar)
-        val clearButton = findViewById<ImageView>(R.id.clear_button)
-
-        toolbar.setNavigationOnClickListener {
-            finish()
-        }
-
-        clearButton.setOnClickListener {
-            editText.text.clear()
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
+        val editText: EditText = findViewById(R.id.edit_text_search)
+        val toolbar: MaterialToolbar = findViewById(R.id.search_toolbar)
+        val clearButton: ImageView = findViewById(R.id.clear_button)
+        val searchResults: RecyclerView = findViewById(R.id.search_results)
 
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -47,8 +40,22 @@ class SearchActivity : AppCompatActivity() {
 
             }
         }
-
         editText.addTextChangedListener(textWatcher)
+
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
+        clearButton.setOnClickListener {
+            editText.text.clear()
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+
+        searchResults.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val tracksAdapter = TrackAdapter(Track.getMockTrackList())
+        searchResults.adapter = tracksAdapter
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

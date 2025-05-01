@@ -33,18 +33,34 @@
           <theme>@style/Base.Theme.PlaylistMaker</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/track_view.xml">
+        <config>
+          <theme>@style/Theme.PlaylistMaker</theme>
+        </config>
+      </layout>
     </layouts>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d30f5c9-23ac-4a1a-891d-b15925285623" name="Changes" comment="Кнопка Х на экране поиска убирает клавиатуру">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" />
+    <list default="true" id="1d30f5c9-23ac-4a1a-891d-b15925285623" name="Changes" comment="Удалил marginTop у экранов, упростил buttonVisibility">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/Track.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/TrackAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/TrackViewHolder.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/album_placeholder.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/text_divider_dot.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/track_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/MediatekaActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/MediatekaActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/SearchActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/playlistmaker/SearchActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,10 +117,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="layoutResourceFile" />
-        <option value="Kotlin Class" />
         <option value="valueResourceFile" />
         <option value="resourceFile" />
+        <option value="layoutResourceFile" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -150,7 +166,8 @@
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;A:/Projects/PlaylistMaker/app/src/main/res/font&quot;,
+    &quot;last_opened_file_path&quot;: &quot;A:/Projects/PlaylistMaker&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.completion&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -357,7 +374,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744924226825</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Удалил marginTop у экранов, упростил buttonVisibility">
+      <option name="closed" value="true" />
+      <created>1744999393388</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1744999393388</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -410,19 +435,20 @@
     <MESSAGE value="Вынес атрибуты меню настроек в стили" />
     <MESSAGE value="Переопределил onSaveInstanceState, onRestoreInstanceState для меню поиска, решил проблему наползания контента приложения на статус панель (как смог)))" />
     <MESSAGE value="Кнопка Х на экране поиска убирает клавиатуру" />
-    <option name="LAST_COMMIT_MESSAGE" value="Кнопка Х на экране поиска убирает клавиатуру" />
+    <MESSAGE value="Удалил marginTop у экранов, упростил buttonVisibility" />
+    <option name="LAST_COMMIT_MESSAGE" value="Удалил marginTop у экранов, упростил buttonVisibility" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">
       <map>
         <entry key="com.example.playlistmaker">
           <value>
-            <CheckInfo lastCheckTimestamp="1744918262775" />
+            <CheckInfo lastCheckTimestamp="1745881007619" />
           </value>
         </entry>
         <entry key="com.example.playlistmaker.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1744918262791" />
+            <CheckInfo lastCheckTimestamp="1745881007619" />
           </value>
         </entry>
       </map>
