@@ -7,8 +7,8 @@ class Track(
     val artworkUrl100: String
 ) {
     companion object {
-        fun getMockTrackList(): ArrayList<Track> {
-            val mockList = arrayListOf(
+        fun getMockTrackList(): List<Track> {
+            val mockList = listOf(
                 Track(
                     trackName = "Smells Like Teen Spirit",
                     artistName = "Nirvana",
@@ -17,7 +17,7 @@ class Track(
                 ),
                 Track(
                     trackName = "Billie Jean",
-                    artistName = "Michael Jackson",
+                    artistName = "MichaelJackson dsfasdgadf dsfwefsd cxvzcvsdm sfadfdsfsadsfv vxcv",
                     trackTime = "4:35",
                     artworkUrl100 = "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"
                 ),
