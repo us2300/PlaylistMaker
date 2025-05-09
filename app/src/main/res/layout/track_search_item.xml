@@ -13,6 +13,7 @@
     <ImageView
         android:id="@+id/album_cover"
         style="@style/SearchResultAlbumCover"
+        android:importantForAccessibility="no"
         tools:ignore="RtlHardcoded" />
 
     <!-- Контейнер для текста -->
@@ -28,7 +29,10 @@
             android:id="@+id/track_name"
             style="@style/SearchResultTrackName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxEms="20"
+            android:maxLines="1" />
 
         <!-- Контейнер для нижней строки -->
         <LinearLayout
@@ -51,6 +55,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
                 android:src="@drawable/text_divider_dot"
                 app:tint="?attr/colorOnPrimaryFixed" />
 
@@ -71,6 +76,7 @@
         android:id="@+id/button_to_track"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:importantForAccessibility="no"
         android:paddingLeft="@dimen/right_icon_padding_left"
         android:src="@drawable/icon_arrow_forward"
         tools:ignore="RtlHardcoded" />
