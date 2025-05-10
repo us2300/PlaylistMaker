@@ -125,10 +125,11 @@ class SearchActivity : AppCompatActivity() {
                 call: Call<TracksResponse>,
                 response: Response<TracksResponse>
             ) {
-                if (response.code() == 200) {
+                if (response.isSuccessful) {
                     tracksList.clear()
-                    if (response.body()?.results?.isNotEmpty() == true) {
-                        tracksList.addAll(response.body()?.results!!)
+                    val results = response.body()?.results?: emptyList()
+                    if (results.isNotEmpty()) {
+                        tracksList.addAll(results)
                         tracksAdapter.notifyDataSetChanged()
                     }
                     if (tracksList.isEmpty()) {
@@ -165,8 +166,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             CONNECTION_ISSUES -> {
-                val message =
-                    "${getString(R.string.connection_issues)}\n\n${getString(R.string.load_failed_check_connection)}"
+                val message = getString(R.string.connection_issues) + "\n\n" + getString(R.string.load_failed_check_connection)
                 tracksList.clear()
                 tracksAdapter.notifyDataSetChanged()
 
@@ -190,6 +190,7 @@ class SearchActivity : AppCompatActivity() {
     private fun hideSearchPlaceholders() {
         searchPlaceholderImg.isGone = true
         searchPlaceholderText.isGone = true
+        searchPlaceHolderButton.isGone = true
     }
 
     companion object {

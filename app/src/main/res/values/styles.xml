@@ -12,6 +12,8 @@
         <item name="android:layout_marginBottom">@dimen/screen_title_margin_bottom</item>
         <item name="navigationIconTint">?attr/colorOnPrimary</item>
         <item name="android:layout_marginTop">@dimen/status_bar_height</item>
+        <item name="contentInsetStartWithNavigation">@dimen/search_toolbar_text_nav_icon_padding
+        </item>
     </style>
 
     <style name="MainMenuTitle" parent="ScreenTitle">

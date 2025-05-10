@@ -13,6 +13,7 @@
         style="@style/ScreenTitle"
         app:navigationIcon="@drawable/icon_arrow_back"
         app:title="@string/search"
+        android:layout_marginBottom="@dimen/search_toolbar_margin_bottom"
         app:titleTextAppearance="@style/TitleTextAppearance" />
 
     <!-- Окно поиска -->
