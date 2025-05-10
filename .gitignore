@@ -18,6 +18,8 @@ output.json
 # IntelliJ
 *.iml
 .idea/
+.idea/assetWizardSettings.xml
+.idea/workspace.xml
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml

@@ -13,4 +13,8 @@
     <string name="support_email_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="user_agreement_link">https://yandex.ru/legal/practicum_offer/</string>
     <string name="seacrh">Поиск</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="connection_issues">Проблемы со связью</string>
+    <string name="load_failed_check_connection">Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="reload">Обновить</string>
 </resources>
