@@ -7,7 +7,8 @@
     android:orientation="horizontal"
     android:paddingStart="@dimen/search_result_view_padding_left"
     android:paddingEnd="@dimen/search_result_view_padding_right"
-    tools:ignore="RtlSymmetry">
+    tools:ignore="RtlSymmetry"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <!-- Обложка альбома -->
     <ImageView

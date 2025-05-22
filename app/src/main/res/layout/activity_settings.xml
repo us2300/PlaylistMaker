@@ -15,6 +15,7 @@
         app:titleTextAppearance="@style/TitleTextAppearance" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/theme_switcher"
         style="@style/SwitchItem"
         android:text="@string/dark_theme"
         app:thumbTint="@color/switch_thumb_color"
