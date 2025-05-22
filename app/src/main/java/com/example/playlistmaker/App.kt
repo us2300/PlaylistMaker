@@ -22,6 +22,9 @@ class App : Application() {
             DARK_THEME_ENABLED,
             AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_YES
         )
+        AppCompatDelegate.setDefaultNightMode(
+            if (darkTheme) MODE_NIGHT_YES else MODE_NIGHT_NO
+        )
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
