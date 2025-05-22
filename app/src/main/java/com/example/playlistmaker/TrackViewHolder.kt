@@ -16,8 +16,10 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val artistName: TextView = itemView.findViewById(R.id.artist_name)
     private val trackTime: TextView = itemView.findViewById(R.id.track_time)
     private val albumCover: ImageView = itemView.findViewById(R.id.album_cover)
+    private var trackId: Int = -1
 
     fun bind(model: Track) {
+        trackId = model.trackId
         trackName.text = model.trackName
         artistName.text = model.artistName
         trackTime.text = millisToMin(model.trackTimeMillis)

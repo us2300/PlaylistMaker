@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +16,15 @@ class SettingsActivity : AppCompatActivity() {
         val toolbar = findViewById<MaterialToolbar>(R.id.settings_toolbar)
         toolbar.setNavigationOnClickListener {
             finish()
+        }
+
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.theme_switcher)
+        if ((applicationContext as App).darkTheme) {
+            themeSwitcher.isChecked = true
+        }
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+            recreate()
         }
 
         val shareButton = findViewById<ImageView>(R.id.shareButton)
@@ -27,9 +37,12 @@ class SettingsActivity : AppCompatActivity() {
 
         val supportButton = findViewById<ImageView>(R.id.supportButton)
         supportButton.setOnClickListener {
-            val supportIntent = Intent (Intent.ACTION_SENDTO)
+            val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.data = Uri.parse("mailto:")
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_email_address)))
+            supportIntent.putExtra(
+                Intent.EXTRA_EMAIL,
+                arrayOf(getString(R.string.support_email_address))
+            )
             supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_email_subject))
             supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.support_email_text))
             startActivity(supportIntent)

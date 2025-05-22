@@ -11,9 +11,9 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/search_toolbar"
         style="@style/ScreenTitle"
+        android:layout_marginBottom="@dimen/search_toolbar_margin_bottom"
         app:navigationIcon="@drawable/icon_arrow_back"
         app:title="@string/search"
-        android:layout_marginBottom="@dimen/search_toolbar_margin_bottom"
         app:titleTextAppearance="@style/TitleTextAppearance" />
 
     <!-- Окно поиска -->
@@ -33,7 +33,7 @@
             android:singleLine="true" />
 
         <ImageView
-            android:id="@+id/clear_button"
+            android:id="@+id/search_edit_text_clear_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
@@ -50,45 +50,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Список успешно найденных треков -->
+        <!-- Список с результатами поиска -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_results"
+            android:id="@+id/search_results_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white" />
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- Список с историей поиска -->
+        <include layout="@layout/search_history_layout" />
 
         <!-- Заглушка -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/search_placeholder_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/search_placeholder_image_margin_top"
-                android:importantForAccessibility="no"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/search_placeholder_text"
-                style="@style/SearchPlaceholderText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/search_placeholder_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/reload"
-                android:visibility="gone"
-                style="@style/SearchPlaceholderButton" />
-
-        </LinearLayout>
+        <include layout="@layout/search_placeholder_layout" />
 
     </FrameLayout>
+
 
 </LinearLayout>
