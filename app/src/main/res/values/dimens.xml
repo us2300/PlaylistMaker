@@ -9,7 +9,7 @@
     <dimen name="text_size_tiny">11sp</dimen>
     <dimen name="end_margin">18dp</dimen>
     <dimen name="main_menu_button_corner_radius">16dp</dimen>
-    <dimen name="search_menu_button_corner_radius">54sp</dimen>
+    <dimen name="search_menu_button_corner_radius">54dp</dimen>
     <dimen name="screen_title_margin_bottom">24dp</dimen>
     <dimen name="search_bar_margin_bottom">24dp</dimen>
     <dimen name="search_text_vertical_padding">8.5dp</dimen>
@@ -27,4 +27,9 @@
     <dimen name="search_placeholder_text_margin_horizontal">24dp</dimen>
     <dimen name="search_placeholder_text_margin_bottom">24dp</dimen>
     <dimen name="status_bar_height">24dp</dimen>
+    <dimen name="track_history_title_margin_bottom">8dp</dimen>
+    <dimen name="track_history_title_padding_top">18dp</dimen>
+    <dimen name="track_history_title_padding_bottom">12dp</dimen>
+    <dimen name="clear_history_button_margin_top">24dp</dimen>
+    <dimen name="clear_history_button_margin_bottom">28dp</dimen>
 </resources>
