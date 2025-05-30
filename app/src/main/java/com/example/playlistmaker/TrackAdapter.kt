@@ -1,13 +1,13 @@
 package com.example.playlistmaker
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class TrackAdapter(
-    val tracks: MutableList<Track>,
-    val searchHistory: SearchHistory,
-    private val isHistoryAdapter: Boolean
+    private val tracks: MutableList<Track>,
+    private val searchHistory: SearchHistory
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
     var onItemClickListener: ((Track) -> Unit)? = null
@@ -21,11 +21,20 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val currentTrack = tracks[position]
         holder.bind(currentTrack)
-        if (!isHistoryAdapter) {
-            holder.itemView.setOnClickListener {
-                onItemClickListener?.invoke(currentTrack)
-                searchHistory.addToHistory(currentTrack)
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.invoke(currentTrack)
+            searchHistory.addToHistory(currentTrack)
+            val playerIntent = Intent(holder.itemView.context, PlayerActivity::class.java).apply {
+                putExtra("track_name", currentTrack.trackName)
+                putExtra("artist_name", currentTrack.artistName)
+                putExtra("track_time_millis", currentTrack.trackTimeMillis)
+                putExtra("collection_name", currentTrack.collectionName)
+                putExtra("release_date", currentTrack.releaseDate)
+                putExtra("primary_genre_name", currentTrack.primaryGenreName)
+                putExtra("country", currentTrack.country)
+                putExtra("artwork_url_100", currentTrack.artworkUrl100)
             }
+            holder.itemView.context.startActivity(playerIntent)
         }
     }
 

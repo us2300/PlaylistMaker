@@ -6,7 +6,7 @@
     <dimen name="text_size_medium">19sp</dimen>
     <dimen name="text_size_regular">16sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
-    <dimen name="text_size_tiny">11sp</dimen>
+    <dimen name="text_size_small_3">11sp</dimen>
     <dimen name="end_margin">18dp</dimen>
     <dimen name="main_menu_button_corner_radius">16dp</dimen>
     <dimen name="search_menu_button_corner_radius">54dp</dimen>
@@ -32,4 +32,15 @@
     <dimen name="track_history_title_padding_bottom">12dp</dimen>
     <dimen name="clear_history_button_margin_top">24dp</dimen>
     <dimen name="clear_history_button_margin_bottom">28dp</dimen>
+    <dimen name="player_album_cover_margin_top">26dp</dimen>
+    <dimen name="player_track_name_margin_top">24dp</dimen>
+    <dimen name="player_artist_name_margin_top">12dp</dimen>
+    <dimen name="player_play_button_margin_top">30dp</dimen>
+    <dimen name="player_listening_time_margin_top">4dp</dimen>
+    <dimen name="text_size_small_2">13sp</dimen>
+    <dimen name="player_vertical_guide_start">24dp</dimen>
+    <dimen name="player_vertical_guide_end">24dp</dimen>
+    <dimen name="player_horizontal_guide_bottom">20dp</dimen>
+    <dimen name="player_description_horizontal_padding">16dp</dimen>
+    <dimen name="player_description_margin_top">30dp</dimen>
 </resources>
