@@ -89,7 +89,7 @@
 
     <style name="SearchResultArtistAndTrackTime">
         <item name="android:textColor">?attr/colorOnPrimaryFixed</item>
-        <item name="android:textSize">@dimen/text_size_tiny</item>
+        <item name="android:textSize">@dimen/text_size_small_3</item>
     </style>
 
     <style name="SearchResultAlbumCover">
@@ -120,6 +120,25 @@
         <item name="android:textColor">?attr/colorPrimary</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="cornerRadius">@dimen/search_menu_button_corner_radius</item>
+    </style>
+
+    <style name="PlayerDescriptionItemsLeftColumn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">@dimen/text_size_small_2</item>
+        <item name="android:paddingStart">@dimen/player_description_horizontal_padding</item>
+    </style>
+
+    <style name="PlayerDescriptionItemsRightColumn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/text_size_small_2</item>
+        <item name="android:paddingEnd">@dimen/player_description_horizontal_padding</item>
     </style>
 
 </resources>

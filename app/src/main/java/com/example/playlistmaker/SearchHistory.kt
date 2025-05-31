@@ -31,7 +31,7 @@ class SearchHistory(private val prefs: SharedPreferences) {
         saveHistoryToPrefs()
     }
 
-    private fun loadHistoryFromPrefs() {
+    fun loadHistoryFromPrefs() {
         val json = prefs.getString(SEARCH_HISTORY, null)
         val arrayFromPrefs = gson.fromJson(json, Array<Track>::class.java) ?: emptyArray()
         tracksHistory.addAll(arrayFromPrefs)

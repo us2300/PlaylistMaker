@@ -46,10 +46,10 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var searchResultsAdapter: TrackAdapter
     private lateinit var searchHistoryAdapter: TrackAdapter
-    private lateinit var searchPlaceholderImg: ImageView
-    private lateinit var searchPlaceholderText: TextView
-    private lateinit var searchPlaceHolderButton: Button
-    private lateinit var searchHistoryClearButton: Button
+    private lateinit var placeHolderImg: ImageView
+    private lateinit var placeHolderText: TextView
+    private lateinit var placeHolderButton: Button
+    private lateinit var clearButton: Button
     private lateinit var searchHistoryView: LinearLayout
     private lateinit var searchHistoryRecyclerView: RecyclerView
     private lateinit var searchInput: EditText
@@ -69,13 +69,13 @@ class SearchActivity : AppCompatActivity() {
         searchInput = findViewById(R.id.edit_text_search)
         searchResultsRecyclerView = findViewById(R.id.search_results_recycler_view)
 
-        searchPlaceholderImg = findViewById(R.id.search_placeholder_image)
-        searchPlaceholderText = findViewById(R.id.search_placeholder_text)
-        searchPlaceHolderButton = findViewById(R.id.search_placeholder_button)
+        placeHolderImg = findViewById(R.id.search_placeholder_image)
+        placeHolderText = findViewById(R.id.search_placeholder_text)
+        placeHolderButton = findViewById(R.id.search_placeholder_button)
 
         searchHistoryView = findViewById(R.id.search_history_view_group)
         searchHistoryRecyclerView = findViewById(R.id.search_history_recycler_view)
-        searchHistoryClearButton = findViewById(R.id.search_history_clear_button)
+        clearButton = findViewById(R.id.search_history_clear_button)
         searchHistory = SearchHistory((applicationContext as App).sharedPrefs)
 
         searchResultsRecyclerView.layoutManager =
@@ -84,20 +84,22 @@ class SearchActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         searchHistoryList = searchHistory.getTrackHistoryList()
-        searchHistoryAdapter = TrackAdapter(searchHistoryList, searchHistory, true)
+        searchHistoryAdapter = TrackAdapter(searchHistoryList, searchHistory)
+        searchHistoryAdapter.onItemClickListener = { track ->
+            searchHistory.addToHistory(track)
+        }
         searchHistoryRecyclerView.adapter = searchHistoryAdapter
 
-        searchResultsAdapter = TrackAdapter(searchResultsList, searchHistory, false)
+        searchResultsAdapter = TrackAdapter(searchResultsList, searchHistory)
         searchResultsAdapter.onItemClickListener = { track ->
             searchHistory.addToHistory(track)
-            searchHistoryAdapter.notifyDataSetChanged()
         }
         searchResultsRecyclerView.adapter = searchResultsAdapter
 
-        ViewCompat.setOnApplyWindowInsetsListener(searchHistoryClearButton) { view, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(clearButton) { _, insets ->
             val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
 
-            searchHistoryClearButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            clearButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 bottomMargin = imeInsets.bottom
             }
             insets
@@ -128,7 +130,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-        searchInput.setOnFocusChangeListener { view, hasFocus ->
+        searchInput.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && searchInput.text.isEmpty()) {
                 showSearchHistory()
             } else hideSearchHistory()
@@ -148,13 +150,13 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        searchHistoryClearButton.setOnClickListener {
+        clearButton.setOnClickListener {
             searchHistory.clearHistory()
             searchHistoryAdapter.notifyDataSetChanged()
             hideSearchHistory()
         }
 
-        searchPlaceHolderButton.setOnClickListener {
+        placeHolderButton.setOnClickListener {
             hideSearchPlaceholders()
             tracksSearch()
         }
@@ -178,6 +180,12 @@ class SearchActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         searchHistory.saveHistoryToPrefs()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        super.onResume()
+        searchHistoryAdapter.notifyDataSetChanged()
     }
 
     private fun tracksSearch() {
@@ -216,15 +224,15 @@ class SearchActivity : AppCompatActivity() {
                 searchResultsList.clear()
                 searchResultsAdapter.notifyDataSetChanged()
 
-                searchPlaceholderImg.setImageDrawable(
+                placeHolderImg.setImageDrawable(
                     AppCompatResources.getDrawable(
                         this,
                         R.drawable.img_nothing_found
                     )
                 )
-                searchPlaceholderText.setText(R.string.nothing_found)
-                searchPlaceholderImg.isVisible = true
-                searchPlaceholderText.isVisible = true
+                placeHolderText.setText(R.string.nothing_found)
+                placeHolderImg.isVisible = true
+                placeHolderText.isVisible = true
             }
 
             CONNECTION_ISSUES -> {
@@ -233,16 +241,16 @@ class SearchActivity : AppCompatActivity() {
                 searchResultsList.clear()
                 searchResultsAdapter.notifyDataSetChanged()
 
-                searchPlaceholderImg.setImageDrawable(
+                placeHolderImg.setImageDrawable(
                     AppCompatResources.getDrawable(
                         this,
                         R.drawable.img_connection_issues
                     )
                 )
-                searchPlaceholderText.text = message
-                searchPlaceholderImg.isVisible = true
-                searchPlaceholderText.isVisible = true
-                searchPlaceHolderButton.isVisible = true
+                placeHolderText.text = message
+                placeHolderImg.isVisible = true
+                placeHolderText.isVisible = true
+                placeHolderButton.isVisible = true
                 if (toastMessage.isNotEmpty()) {
                     Toast.makeText(applicationContext, toastMessage, Toast.LENGTH_LONG).show()
                 }
@@ -253,19 +261,19 @@ class SearchActivity : AppCompatActivity() {
     private fun showSearchHistory() {
         if (searchHistoryList.isNotEmpty()) {
             searchHistoryView.isVisible = true
-            searchHistoryClearButton.isVisible = true
+            clearButton.isVisible = true
         }
     }
 
     private fun hideSearchHistory() {
         searchHistoryView.isGone = true
-        searchHistoryClearButton.isGone = true
+        clearButton.isGone = true
     }
 
     private fun hideSearchPlaceholders() {
-        searchPlaceholderImg.isGone = true
-        searchPlaceholderText.isGone = true
-        searchPlaceHolderButton.isGone = true
+        placeHolderImg.isGone = true
+        placeHolderText.isGone = true
+        placeHolderButton.isGone = true
     }
 
     companion object {
