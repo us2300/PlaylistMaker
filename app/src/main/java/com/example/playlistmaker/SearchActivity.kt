@@ -3,10 +3,10 @@ package com.example.playlistmaker
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -16,12 +16,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
@@ -33,12 +30,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
+    private val handler = Handler(Looper.getMainLooper())
+
     private val iTunesBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
+
+    private val searchRunnable = Runnable {
+        tracksSearch()
+    }
 
     private var searchSavedInput: String = INPUT_DEF
     private val searchResultsList = mutableListOf<Track>()
@@ -96,15 +99,6 @@ class SearchActivity : AppCompatActivity() {
         }
         searchResultsRecyclerView.adapter = searchResultsAdapter
 
-        ViewCompat.setOnApplyWindowInsetsListener(clearButton) { _, insets ->
-            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
-
-            clearButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                bottomMargin = imeInsets.bottom
-            }
-            insets
-        }
-
         toolbar.setNavigationOnClickListener {
             finish()
         }
@@ -114,22 +108,22 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearEditTextButton.isVisible = !s.isNullOrEmpty()
-                if (searchInput.hasFocus() && s?.isEmpty() == true) showSearchHistory() else hideSearchHistory()
+                if (searchInput.hasFocus()) {
+                    if (s?.isEmpty() == true) {
+                        searchResultsList.clear()
+                        searchResultsAdapter.notifyDataSetChanged()
+                        showSearchHistory()
+                    }
+                    else hideSearchHistory()
+                }
                 searchSavedInput = s.toString()
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {}
         }
 
         searchInput.addTextChangedListener(textWatcher)
-        searchInput.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                hideSearchHistory()
-                hideSearchPlaceholders()
-                tracksSearch()
-            }
-            false
-        }
         searchInput.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && searchInput.text.isEmpty()) {
                 showSearchHistory()
@@ -148,6 +142,7 @@ class SearchActivity : AppCompatActivity() {
             if (currentFocus != null) {
                 inputMethodManager?.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
             }
+            searchInput.clearFocus()
         }
 
         clearButton.setOnClickListener {
@@ -189,6 +184,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun tracksSearch() {
+        hideSearchPlaceholders()
+        if (searchSavedInput.isEmpty()) return
         iTunesService.search(searchSavedInput).enqueue(object : Callback<TracksResponse> {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(
@@ -214,11 +211,11 @@ class SearchActivity : AppCompatActivity() {
                 showSearchPlaceholder(CONNECTION_ISSUES, t.message.toString())
             }
         })
-        searchInput.clearFocus()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showSearchPlaceholder(reason: Byte, toastMessage: String) {
+        hideSearchHistory()
         when (reason) {
             NOTHING_FOUND -> {
                 searchResultsList.clear()
@@ -260,6 +257,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showSearchHistory() {
         if (searchHistoryList.isNotEmpty()) {
+            hideSearchPlaceholders()
             searchHistoryView.isVisible = true
             clearButton.isVisible = true
         }
@@ -276,10 +274,16 @@ class SearchActivity : AppCompatActivity() {
         placeHolderButton.isGone = true
     }
 
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
     companion object {
         const val SAVED_INPUT = "SAVED_INPUT"
         const val INPUT_DEF = ""
         const val NOTHING_FOUND: Byte = 0
         const val CONNECTION_ISSUES: Byte = -1
+        const val SEARCH_DEBOUNCE_DELAY = 1000L
     }
 }
