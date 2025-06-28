@@ -43,4 +43,5 @@
     <dimen name="player_horizontal_guide_bottom">20dp</dimen>
     <dimen name="player_description_horizontal_padding">16dp</dimen>
     <dimen name="player_description_margin_top">30dp</dimen>
+    <dimen name="progress_bar_margin_top">140dp</dimen>
 </resources>

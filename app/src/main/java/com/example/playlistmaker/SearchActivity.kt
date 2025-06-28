@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +40,12 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
 
+    @SuppressLint("NotifyDataSetChanged")
     private val searchRunnable = Runnable {
+        if (searchResultsList.isNotEmpty()) {
+            searchResultsList.clear()
+            searchResultsAdapter.notifyDataSetChanged()
+        }
         tracksSearch()
     }
 
@@ -57,6 +63,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistoryRecyclerView: RecyclerView
     private lateinit var searchInput: EditText
     private lateinit var searchResultsRecyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
     private lateinit var searchHistory: SearchHistory
 
     @SuppressLint("NotifyDataSetChanged")
@@ -68,6 +75,8 @@ class SearchActivity : AppCompatActivity() {
 
         val toolbar: MaterialToolbar = findViewById(R.id.search_toolbar)
         val clearEditTextButton: ImageView = findViewById(R.id.search_edit_text_clear_button)
+
+        progressBar = findViewById(R.id.progress_circular)
 
         searchInput = findViewById(R.id.edit_text_search)
         searchResultsRecyclerView = findViewById(R.id.search_results_recycler_view)
@@ -131,11 +140,11 @@ class SearchActivity : AppCompatActivity() {
         }
 
         clearEditTextButton.setOnClickListener {
+            handler.removeCallbacks(searchRunnable)
             searchInput.text.clear()
             searchResultsList.clear()
             searchResultsAdapter.notifyDataSetChanged()
 
-            hideSearchPlaceholders()
 
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -185,7 +194,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun tracksSearch() {
         hideSearchPlaceholders()
-        if (searchSavedInput.isEmpty()) return
+        showProgressBar()
+        if (searchSavedInput.isEmpty()) {
+            hideProgressBar()
+            return
+        }
         iTunesService.search(searchSavedInput).enqueue(object : Callback<TracksResponse> {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(
@@ -196,13 +209,16 @@ class SearchActivity : AppCompatActivity() {
                     searchResultsList.clear()
                     val results = response.body()?.results ?: emptyList()
                     if (results.isNotEmpty()) {
+                        hideProgressBar()
                         searchResultsList.addAll(results)
                         searchResultsAdapter.notifyDataSetChanged()
                     }
                     if (searchResultsList.isEmpty()) {
+                        hideProgressBar()
                         showSearchPlaceholder(NOTHING_FOUND, "")
                     }
                 } else {
+                    hideProgressBar()
                     showSearchPlaceholder(CONNECTION_ISSUES, "Response code: ${response.code()}")
                 }
             }
@@ -277,6 +293,14 @@ class SearchActivity : AppCompatActivity() {
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun showProgressBar() {
+        progressBar.isVisible = true
+    }
+
+    private fun hideProgressBar() {
+        progressBar.isGone = true
     }
 
     companion object {
