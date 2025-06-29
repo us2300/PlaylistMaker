@@ -7,7 +7,7 @@ import java.util.Locale
 
 class Util {
     companion object {
-        fun millisToMin(millis: Int) : String {
+        fun millisToMmSs(millis: Int) : String {
             return SimpleDateFormat("mm:ss", Locale.getDefault()).format(millis)
         }
 

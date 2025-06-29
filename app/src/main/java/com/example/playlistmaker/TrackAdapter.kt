@@ -33,6 +33,7 @@ class TrackAdapter(
                 putExtra("primary_genre_name", currentTrack.primaryGenreName)
                 putExtra("country", currentTrack.country)
                 putExtra("artwork_url_100", currentTrack.artworkUrl100)
+                putExtra("preview_url", currentTrack.previewUrl)
             }
             holder.itemView.context.startActivity(playerIntent)
         }
