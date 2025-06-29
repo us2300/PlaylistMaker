@@ -97,15 +97,9 @@ class SearchActivity : AppCompatActivity() {
 
         searchHistoryList = searchHistory.getTrackHistoryList()
         searchHistoryAdapter = TrackAdapter(searchHistoryList, searchHistory)
-        searchHistoryAdapter.onItemClickListener = { track ->
-            searchHistory.addToHistory(track)
-        }
         searchHistoryRecyclerView.adapter = searchHistoryAdapter
 
         searchResultsAdapter = TrackAdapter(searchResultsList, searchHistory)
-        searchResultsAdapter.onItemClickListener = { track ->
-            searchHistory.addToHistory(track)
-        }
         searchResultsRecyclerView.adapter = searchResultsAdapter
 
         toolbar.setNavigationOnClickListener {
@@ -308,6 +302,6 @@ class SearchActivity : AppCompatActivity() {
         const val INPUT_DEF = ""
         const val NOTHING_FOUND: Byte = 0
         const val CONNECTION_ISSUES: Byte = -1
-        const val SEARCH_DEBOUNCE_DELAY = 1000L
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
