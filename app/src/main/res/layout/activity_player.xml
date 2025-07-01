@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     tools:context=".PlayerActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -102,7 +103,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/player_listening_time_margin_top"
         android:fontFamily="@font/ys_display_medium"
-        android:text="1:00"
         android:textColor="?attr/colorOnPrimary"
         android:textSize="@dimen/text_size_small"
         app:layout_constraintEnd_toStartOf="@id/right_border"

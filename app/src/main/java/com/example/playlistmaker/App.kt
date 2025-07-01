@@ -2,7 +2,9 @@ package com.example.playlistmaker
 
 import android.app.Application
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 
@@ -18,13 +20,19 @@ class App : Application() {
         super.onCreate()
 
         sharedPrefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
-        darkTheme = sharedPrefs.getBoolean(
-            DARK_THEME_ENABLED,
-            AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_YES
-        )
-        AppCompatDelegate.setDefaultNightMode(
-            if (darkTheme) MODE_NIGHT_YES else MODE_NIGHT_NO
-        )
+        if (!sharedPrefs.contains(DARK_THEME_ENABLED)) {
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
+            val isSystemDarkThemeEnabled =
+                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            darkTheme = isSystemDarkThemeEnabled
+        } else {
+            darkTheme = sharedPrefs.getBoolean(
+                DARK_THEME_ENABLED, false
+            )
+            AppCompatDelegate.setDefaultNightMode(
+                if (darkTheme) MODE_NIGHT_YES else MODE_NIGHT_NO
+            )
+        }
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {

@@ -19,7 +19,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackId = model.trackId
         trackName.text = model.trackName
         artistName.text = model.artistName
-        trackTime.text = Util.millisToMin(model.trackTimeMillis)
+        trackTime.text = Util.millisToMmSs(model.trackTimeMillis)
         Glide.with(itemView)
             .load(model.artworkUrl100)
             .placeholder(R.drawable.album_placeholder)
