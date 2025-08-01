@@ -1,34 +1,31 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
 import android.app.Application
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
-
-const val APP_PREFERENCES = "playlist_maker_preferences"
-const val DARK_THEME_ENABLED = "dark_theme_enabled"
+import com.example.playlistmaker.domain.api.ThemeInteractor
+import com.example.playlistmaker.util.Creator
 
 class App : Application() {
 
-    var darkTheme = false
-    lateinit var sharedPrefs: SharedPreferences
+    private val themeInteractor: ThemeInteractor by lazy { Creator.provideThemeInteractor() }
+
+    private var darkTheme = false
 
     override fun onCreate() {
         super.onCreate()
+        Creator.initApplication(this)
 
-        sharedPrefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
-        if (!sharedPrefs.contains(DARK_THEME_ENABLED)) {
+        if (!themeInteractor.isThemeSaved()) {
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
             val isSystemDarkThemeEnabled =
                 (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
             darkTheme = isSystemDarkThemeEnabled
         } else {
-            darkTheme = sharedPrefs.getBoolean(
-                DARK_THEME_ENABLED, false
-            )
+            darkTheme = themeInteractor.getTheme()
             AppCompatDelegate.setDefaultNightMode(
                 if (darkTheme) MODE_NIGHT_YES else MODE_NIGHT_NO
             )
@@ -37,9 +34,7 @@ class App : Application() {
 
     fun switchTheme(darkThemeEnabled: Boolean) {
         darkTheme = darkThemeEnabled
-        sharedPrefs.edit()
-            .putBoolean(DARK_THEME_ENABLED, darkTheme)
-            .apply()
+        themeInteractor.saveTheme(darkThemeEnabled)
 
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) MODE_NIGHT_YES else MODE_NIGHT_NO

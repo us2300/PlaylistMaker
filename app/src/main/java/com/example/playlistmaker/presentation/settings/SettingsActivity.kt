@@ -1,10 +1,13 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.settings
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.presentation.App
+import com.example.playlistmaker.R
+import com.example.playlistmaker.util.Creator
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 
@@ -13,15 +16,17 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+        val themeInteractor = Creator.provideThemeInteractor()
+
         val toolbar = findViewById<MaterialToolbar>(R.id.settings_toolbar)
         toolbar.setNavigationOnClickListener {
             finish()
         }
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.theme_switcher)
-        if ((applicationContext as App).darkTheme) {
-            themeSwitcher.isChecked = true
-        }
+
+        themeSwitcher.isChecked = themeInteractor.getTheme()
+
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
             (applicationContext as App).switchTheme(checked)
             recreate()

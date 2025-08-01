@@ -1,28 +1,23 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.data.impl
 
 import android.content.SharedPreferences
+import com.example.playlistmaker.data.dto.TrackDto
+import com.example.playlistmaker.domain.api.SearchHistoryRepository
 import com.google.gson.Gson
 
 const val SEARCH_HISTORY = "search_history"
 
-class SearchHistory(private val prefs: SharedPreferences) {
+class SearchHistoryRepositoryImpl(private val prefs: SharedPreferences) :
+    SearchHistoryRepository {
+
     private val gson = Gson()
-    private val tracksHistory = mutableListOf<Track>()
+    private val tracksHistory = mutableListOf<TrackDto>()
 
     init {
         loadHistoryFromPrefs()
     }
 
-    fun getTrackHistoryList(): MutableList<Track> {
-        return tracksHistory
-    }
-
-    fun clearHistory() {
-        tracksHistory.clear()
-        saveHistoryToPrefs()
-    }
-
-    fun addToHistory(track: Track) {
+    override fun saveTrackToHistory(track: TrackDto) {
         removeTrackIfExists(track)
         tracksHistory.add(0, track)
         if (tracksHistory.size > MAX_HISTORY_SIZE) {
@@ -31,13 +26,22 @@ class SearchHistory(private val prefs: SharedPreferences) {
         saveHistoryToPrefs()
     }
 
-    fun loadHistoryFromPrefs() {
+    override fun getHistoryList(): MutableList<TrackDto> {
+        return tracksHistory
+    }
+
+    override fun clearHistory() {
+        tracksHistory.clear()
+        saveHistoryToPrefs()
+    }
+
+    private fun loadHistoryFromPrefs() {
         val json = prefs.getString(SEARCH_HISTORY, null)
-        val arrayFromPrefs = gson.fromJson(json, Array<Track>::class.java) ?: emptyArray()
+        val arrayFromPrefs = gson.fromJson(json, Array<TrackDto>::class.java) ?: emptyArray()
         tracksHistory.addAll(arrayFromPrefs)
     }
 
-    private fun removeTrackIfExists(track: Track) {
+    private fun removeTrackIfExists(track: TrackDto) {
         val iterator = tracksHistory.iterator()
         while (iterator.hasNext()) {
             val currentTrack = iterator.next()
@@ -47,7 +51,7 @@ class SearchHistory(private val prefs: SharedPreferences) {
         }
     }
 
-    fun saveHistoryToPrefs() {
+    private fun saveHistoryToPrefs() {
         val json = gson.toJson(tracksHistory.take(MAX_HISTORY_SIZE)).toString()
         prefs.edit().putString(SEARCH_HISTORY, json).apply()
     }
