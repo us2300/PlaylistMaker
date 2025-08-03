@@ -3,8 +3,6 @@ package com.example.playlistmaker.util
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import android.os.Handler
-import android.os.Looper
 import com.example.playlistmaker.data.impl.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.data.impl.TracksRepositoryImpl
@@ -19,7 +17,6 @@ import com.example.playlistmaker.domain.api.ThemeInteractor
 import com.example.playlistmaker.domain.api.ThemeRepository
 import com.example.playlistmaker.domain.api.TrackSearchInteractor
 import com.example.playlistmaker.domain.api.TracksRepository
-import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.impl.AudioPlayerInteractorImpl
 import com.example.playlistmaker.domain.impl.SearchHistoryInteractorImpl
 import com.example.playlistmaker.domain.impl.ThemeInteractorImpl
@@ -35,17 +32,13 @@ object Creator {
         this.application = application
     }
 
-    fun provideMainHandler(): Handler {
-        return Handler(Looper.getMainLooper())
-    }
-
     //Interactors
     //
     fun provideTrackSearchInteractor(): TrackSearchInteractor {
         return TrackSearchInteractorImpl(getTracksRepository())
     }
 
-    fun provideSearchHistoryInteractor(): SearchHistoryInteractor<Track> {
+    fun provideSearchHistoryInteractor(): SearchHistoryInteractor {
         return SearchHistoryInteractorImpl(getHistoryRepository())
     }
 

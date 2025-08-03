@@ -14,7 +14,7 @@ import com.example.playlistmaker.presentation.player.PlayerActivity
 
 class TrackAdapter(
     private val tracks: MutableList<Track>,
-    private val searchHistoryInteractor: SearchHistoryInteractor<Track>
+    private val searchHistoryInteractor: SearchHistoryInteractor
 ) : RecyclerView.Adapter<TrackViewHolder>() {
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())

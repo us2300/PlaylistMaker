@@ -3,7 +3,7 @@ package com.example.playlistmaker.data.impl
 import android.content.SharedPreferences
 import com.example.playlistmaker.domain.api.ThemeRepository
 
-const val DARK_THEME_ENABLED = "dark_theme_enabled"
+private const val DARK_THEME_ENABLED = "dark_theme_enabled"
 
 class ThemeRepositoryImpl(private val prefs: SharedPreferences) : ThemeRepository {
     override fun saveDarkThemeEnabled(enabled: Boolean) {

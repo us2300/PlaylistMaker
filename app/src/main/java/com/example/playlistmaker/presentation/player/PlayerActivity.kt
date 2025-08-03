@@ -139,7 +139,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val TIME_REFRESH_DELAY = 300L
-        const val LISTENING_TIME_DEFAULT = 0
+        private const val TIME_REFRESH_DELAY = 300L
+        private const val LISTENING_TIME_DEFAULT = 0
     }
 }

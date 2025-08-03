@@ -7,7 +7,7 @@ import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.mapper.TrackToDtoConverter
 
 class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepository) :
-    SearchHistoryInteractor<Track> {
+    SearchHistoryInteractor {
 
     override fun saveTrackToHistory(track: Track) {
         val dto = TrackToDtoConverter.convert(track)

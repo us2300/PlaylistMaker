@@ -44,6 +44,7 @@ class SearchActivity : AppCompatActivity() {
 
             when (result) {
                 is Resource.Error -> {
+                    hideSearchResults()
                     showSearchPlaceholder(CONNECTION_ISSUES)
                 }
 
@@ -51,13 +52,20 @@ class SearchActivity : AppCompatActivity() {
                     searchResultsList.clear()
                     searchResultsList.addAll(result.results)
                     searchResultsAdapter.notifyDataSetChanged()
+                    showSearchResults()
 
                     if (searchResultsList.isEmpty()) {
+                        hideSearchResults()
                         showSearchPlaceholder(NOTHING_FOUND)
                     }
                 }
             }
         }
+    }
+
+    private val searchRunnable = Runnable {
+        showProgressBar()
+        trackSearchInteractor.searchTracks(searchSavedInput, trackSearchConsumer)
     }
 
     private lateinit var searchResultsAdapter: TrackAdapter
@@ -120,24 +128,16 @@ class SearchActivity : AppCompatActivity() {
                 if (searchInput.hasFocus()) {
 
                     if (s?.isEmpty() == true) {
+                        handler.removeCallbacks(searchRunnable)
                         searchResultsList.clear()
                         searchResultsAdapter.notifyDataSetChanged()
+                        hideSearchResults()
                         showSearchHistory()
 
                     } else {
                         hideSearchHistory()
                         searchSavedInput = s.toString()
-
-                        if (searchResultsList.isNotEmpty()) {
-                            searchResultsList.clear()
-                            searchResultsAdapter.notifyDataSetChanged()
-                        }
-                        showProgressBar()
-                        trackSearchInteractor.searchTracksDebounce(
-                            searchSavedInput,
-                            trackSearchConsumer
-                        )
-
+                        searchDebounce()
                     }
                 }
             }
@@ -148,15 +148,17 @@ class SearchActivity : AppCompatActivity() {
         searchInput.addTextChangedListener(textWatcher)
         searchInput.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && searchInput.text.isEmpty()) {
+                hideSearchResults()
                 showSearchHistory()
             } else hideSearchHistory()
         }
 
         clearEditTextButton.setOnClickListener {
-            trackSearchInteractor.removeSearchCallbacks()
+            handler.removeCallbacks(searchRunnable)
             searchInput.text.clear()
             searchResultsList.clear()
             searchResultsAdapter.notifyDataSetChanged()
+            hideSearchResults()
 
 
             val inputMethodManager =
@@ -198,6 +200,14 @@ class SearchActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         searchHistoryAdapter.notifyDataSetChanged()
+    }
+
+    private fun searchDebounce() {
+        if (searchSavedInput.isEmpty()) {
+            return
+        } else {
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -253,6 +263,14 @@ class SearchActivity : AppCompatActivity() {
         clearHistoryButton.isGone = true
     }
 
+    private fun showSearchResults() {
+        searchResultsRecyclerView.isVisible = true
+    }
+
+    private fun hideSearchResults() {
+        searchResultsRecyclerView.isGone = true
+    }
+
     private fun hideSearchPlaceholders() {
         placeHolderImg.isGone = true
         placeHolderText.isGone = true
@@ -268,9 +286,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val SAVED_INPUT = "SAVED_INPUT"
-        const val INPUT_DEF = ""
-        const val NOTHING_FOUND: Int = 0
-        const val CONNECTION_ISSUES: Int = -1
+        private const val SAVED_INPUT = "SAVED_INPUT"
+        private const val INPUT_DEF = ""
+        private const val NOTHING_FOUND: Int = 0
+        private const val CONNECTION_ISSUES: Int = -1
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }

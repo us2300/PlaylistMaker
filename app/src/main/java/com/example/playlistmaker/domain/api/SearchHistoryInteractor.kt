@@ -1,6 +1,8 @@
 package com.example.playlistmaker.domain.api
 
-interface SearchHistoryInteractor<Track> {
+import com.example.playlistmaker.domain.entity.Track
+
+interface SearchHistoryInteractor {
 
     fun saveTrackToHistory(track: Track)
 
