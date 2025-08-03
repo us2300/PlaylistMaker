@@ -1,6 +1,6 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.data.dto
 
-data class Track(
+data class TrackDto(
     val trackId: Int,
     val trackName: String,
     val artistName: String,
@@ -14,7 +14,7 @@ data class Track(
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is Track) return false
+        if (other !is TrackDto) return false
 
         return this.trackId == other.trackId
     }

@@ -1,6 +1,5 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.player
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,25 +11,29 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.Util.Companion.dpToPx
-import com.example.playlistmaker.Util.Companion.getCoverArtwork512
-import com.example.playlistmaker.Util.Companion.millisToMmSs
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.api.AudioPlayerInteractor
+import com.example.playlistmaker.domain.entity.PlayerState
+import com.example.playlistmaker.util.Creator
+import com.example.playlistmaker.util.Util.Companion.dpToPx
+import com.example.playlistmaker.util.Util.Companion.getCoverArtwork512
+import com.example.playlistmaker.util.Util.Companion.millisToMmSs
 import com.google.android.material.appbar.MaterialToolbar
 
 class PlayerActivity : AppCompatActivity() {
-    private val player = MediaPlayer()
-    private var playerState = STATE_DEFAULT
-    private val handler = Handler(Looper.getMainLooper())
 
     private var previewUrl: String? = null
     private lateinit var playButton: ImageButton
     private lateinit var listeningTimeText: TextView
+    private lateinit var audioPlayerInteractor: AudioPlayerInteractor
+
+    private val handler = Handler(Looper.getMainLooper())
+
     private val timeRefreshRunnable = object : Runnable {
+
         override fun run() {
-            if (playerState == STATE_PLAYING) {
-                listeningTimeText.text = millisToMmSs(player.currentPosition)
-                handler.postDelayed(this, TIME_REFRESH_DELAY)
-            }
+            listeningTimeText.text = audioPlayerInteractor.getCurrentPositionConverted()
+            handler.postDelayed(this, TIME_REFRESH_DELAY)
         }
     }
 
@@ -46,7 +49,7 @@ class PlayerActivity : AppCompatActivity() {
         val trackName: TextView = findViewById(R.id.track_name)
         val artistName: TextView = findViewById(R.id.artist_name)
         val trackTime: TextView = findViewById(R.id.track_time)
-        val collectionName:TextView = findViewById(R.id.album_name)
+        val collectionName: TextView = findViewById(R.id.album_name)
         val releaseDate: TextView = findViewById(R.id.year_value)
         val primaryGenreName: TextView = findViewById(R.id.genre)
         val country: TextView = findViewById(R.id.country)
@@ -56,7 +59,7 @@ class PlayerActivity : AppCompatActivity() {
         // Секция с информацией о треке
         trackName.text = intent.getStringExtra("track_name")
         artistName.text = intent.getStringExtra("artist_name")
-        trackTime.text = millisToMmSs(intent.getIntExtra("track_time_millis", 0))
+        trackTime.text = millisToMmSs(intent.getIntExtra("track_time_converted", 0))
         releaseDate.text = intent.getStringExtra("release_date")?.take(4)
         primaryGenreName.text = intent.getStringExtra("primary_genre_name")
         country.text = intent.getStringExtra("country")
@@ -64,7 +67,34 @@ class PlayerActivity : AppCompatActivity() {
         listeningTimeText.text = millisToMmSs(LISTENING_TIME_DEFAULT)
         previewUrl = intent.getStringExtra("preview_url")
 
-        preparePlayer()
+        try {
+            audioPlayerInteractor = Creator.provideAudioPlayerInteractor(
+                previewUrl = previewUrl,
+                onStateChangedListener = { state ->
+                    when (state) {
+                        is PlayerState.PAUSED -> {
+                            handler.removeCallbacks(timeRefreshRunnable)
+                            playButton.setImageResource(R.drawable.button_play)
+                        }
+
+                        is PlayerState.PLAYING -> {
+                            handler.post(timeRefreshRunnable)
+                            playButton.setImageResource(R.drawable.button_pause)
+                        }
+
+                        is PlayerState.PREPARED -> {
+                            handler.removeCallbacks(timeRefreshRunnable)
+                            listeningTimeText.text = millisToMmSs(LISTENING_TIME_DEFAULT)
+                            playButton.setImageResource(R.drawable.button_play)
+                        }
+
+                        is PlayerState.DEFAULT -> {}
+                    }
+                }
+            )
+        } catch (e: Exception) {
+            showToast(e.message.toString())
+        }
 
         val albumName = intent.getStringExtra("collection_name")
         if (albumName == null) {
@@ -85,63 +115,31 @@ class PlayerActivity : AppCompatActivity() {
             .into(albumCover)
 
         playButton.setOnClickListener {
-            when (playerState) {
-                STATE_PREPARED, STATE_PAUSED -> startPlayer()
-                STATE_PLAYING -> pausePlayer()
-                else -> Toast.makeText(this, getString(R.string.error_player_not_prepared), Toast.LENGTH_SHORT).show()
+            try {
+                audioPlayerInteractor.onPlayButtonClicked()
+            } catch (e: Exception) {
+                showToast(e.message.toString())
             }
         }
     }
 
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        audioPlayerInteractor.pausePlayer()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(timeRefreshRunnable)
-        player.release()
+        audioPlayerInteractor.releasePlayer()
     }
 
-    private fun preparePlayer() {
-        if (previewUrl == null) {
-            Toast.makeText(this, getString(R.string.error_missing_link_to_track_preview), Toast.LENGTH_SHORT).show()
-            return
-        }
-        player.setDataSource(previewUrl)
-        player.prepareAsync()
-        player.setOnPreparedListener {
-            playerState = STATE_PREPARED
-        }
-        player.setOnCompletionListener {
-            handler.removeCallbacks(timeRefreshRunnable)
-            listeningTimeText.text = millisToMmSs(LISTENING_TIME_DEFAULT)
-            playButton.setImageResource(R.drawable.button_play)
-            playerState = STATE_PREPARED
-        }
-    }
-
-    private fun startPlayer() {
-        player.start()
-        playerState = STATE_PLAYING
-        handler.post(timeRefreshRunnable)
-        playButton.setImageResource(R.drawable.button_pause)
-    }
-
-    private fun pausePlayer() {
-        player.pause()
-        playerState = STATE_PAUSED
-        handler.removeCallbacks(timeRefreshRunnable)
-        playButton.setImageResource(R.drawable.button_play)
+    private fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
     companion object {
-        const val STATE_DEFAULT: Byte = 0
-        const val STATE_PREPARED: Byte = 1
-        const val STATE_PLAYING: Byte = 2
-        const val STATE_PAUSED: Byte = 3
-        const val LISTENING_TIME_DEFAULT: Int = 0
-        const val TIME_REFRESH_DELAY: Long = 300L
+        private const val TIME_REFRESH_DELAY = 300L
+        private const val LISTENING_TIME_DEFAULT = 0
     }
 }
