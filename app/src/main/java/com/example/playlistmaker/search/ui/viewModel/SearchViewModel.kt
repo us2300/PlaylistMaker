@@ -5,21 +5,22 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
+import com.example.playlistmaker.search.domain.api.TrackSearchInteractor
 import com.example.playlistmaker.search.domain.consumer.TrackConsumer
 import com.example.playlistmaker.search.domain.entity.Resource
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.ui.entity.SearchState
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel(
+    private val trackSearchInteractor: TrackSearchInteractor,
+    private val searchHistoryInteractor: SearchHistoryInteractor
+) : ViewModel() {
 
     private val handler = Handler(Looper.getMainLooper())
 
     private var searchQuery: String = ""
     private var isEditTextInFocus: Boolean = false
-
-    private val trackSearchInteractor = Creator.provideTrackSearchInteractor()
-    private val searchHistoryInteractor = Creator.provideSearchHistoryInteractor()
 
     private var searchStateLiveData = MutableLiveData<SearchState>(SearchState.Empty)
     fun observeSearchState(): LiveData<SearchState> = searchStateLiveData
@@ -28,14 +29,14 @@ class SearchViewModel : ViewModel() {
         handler.post {
             when (result) {
                 is Resource.Error -> {
-                    postState(SearchState.PlaceHolder.NetworkError())
+                    overrideStateLiveData(SearchState.PlaceHolder.NetworkError())
                 }
 
                 is Resource.Success -> {
                     if (result.results.isEmpty()) {
-                        postState(SearchState.PlaceHolder.NothingFound())
+                        overrideStateLiveData(SearchState.PlaceHolder.NothingFound())
                     } else {
-                        postState(SearchState.SearchResults(result.results))
+                        overrideStateLiveData(SearchState.SearchResults(result.results))
                     }
                 }
             }
@@ -65,7 +66,7 @@ class SearchViewModel : ViewModel() {
 
     fun onClearHistoryButtonClicked() {
         searchHistoryInteractor.clearHistory()
-        postState(SearchState.Empty)
+        overrideStateLiveData(SearchState.Empty)
     }
 
     fun onTryAgainButtonClicked() {
@@ -77,7 +78,7 @@ class SearchViewModel : ViewModel() {
             updateState()
             return
         }
-        postState(SearchState.Loading)
+        overrideStateLiveData(SearchState.Loading)
         trackSearchInteractor.searchTracks(searchText, trackSearchConsumer)
     }
 
@@ -90,7 +91,7 @@ class SearchViewModel : ViewModel() {
         }
     }
 
-    private fun postState(state: SearchState) {
+    private fun overrideStateLiveData(state: SearchState) {
         searchStateLiveData.value = state
     }
 
@@ -101,10 +102,15 @@ class SearchViewModel : ViewModel() {
             }
 
             isEditTextInFocus && searchQuery.isEmpty() -> {
-                postState(SearchState.History(searchHistoryInteractor.getHistoryList()))
+                val searchHistory = searchHistoryInteractor.getHistoryList()
+                if (searchHistory.isNotEmpty()) {
+                    overrideStateLiveData(SearchState.History(searchHistoryInteractor.getHistoryList()))
+                } else {
+                    overrideStateLiveData(SearchState.Empty)
+                }
             }
 
-            else -> postState(SearchState.Empty)
+            else -> overrideStateLiveData(SearchState.Empty)
         }
     }
 
