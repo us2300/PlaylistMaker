@@ -67,7 +67,7 @@
         <!-- Заглушка -->
         <include
             android:id="@+id/placeholder_layout"
-            layout="@layout/placeholder_layout" />
+            layout="@layout/search_placeholder_layout" />
 
     </FrameLayout>
 
