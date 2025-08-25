@@ -13,10 +13,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = FavoritesFragment()
-    }
-
     private val viewModel: FavoritesViewModel by viewModel()
     private lateinit var binding: FragmentFavoritesBinding
 
@@ -50,5 +46,9 @@ class FavoritesFragment : Fragment() {
 
             placeholderText.text = getString(R.string.your_mediateka_is_empty)
         }
+    }
+
+    companion object {
+        fun newInstance() = FavoritesFragment()
     }
 }

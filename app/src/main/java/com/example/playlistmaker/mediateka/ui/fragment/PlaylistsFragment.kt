@@ -13,10 +13,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = PlaylistsFragment()
-    }
-
     private val viewModel: PlaylistsViewModel by viewModel()
     private lateinit var binding: FragmentPlaylistsBinding
 
@@ -50,5 +46,9 @@ class PlaylistsFragment : Fragment() {
 
             placeholderText.text = getString(R.string.you_havent_created_any_playlists)
         }
+    }
+
+    companion object {
+        fun newInstance() = PlaylistsFragment()
     }
 }
