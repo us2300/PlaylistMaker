@@ -21,6 +21,9 @@ class SearchViewModel(
 
     private var searchQuery: String = ""
     private var isEditTextInFocus: Boolean = false
+    private var forceShowResults: Boolean = false
+
+    private val savedSearchResults = mutableListOf<Track>()
 
     private var searchStateLiveData = MutableLiveData<SearchState>(SearchState.Empty)
     fun observeSearchState(): LiveData<SearchState> = searchStateLiveData
@@ -29,13 +32,17 @@ class SearchViewModel(
         handler.post {
             when (result) {
                 is Resource.Error -> {
+                    savedSearchResults.clear()
                     overrideStateLiveData(SearchState.PlaceHolder.NetworkError())
                 }
 
                 is Resource.Success -> {
                     if (result.results.isEmpty()) {
+                        savedSearchResults.clear()
                         overrideStateLiveData(SearchState.PlaceHolder.NothingFound())
                     } else {
+                        savedSearchResults.clear()
+                        savedSearchResults.addAll(result.results)
                         overrideStateLiveData(SearchState.SearchResults(result.results))
                     }
                 }
@@ -96,22 +103,32 @@ class SearchViewModel(
     }
 
     private fun updateState() {
-        when {
-            isEditTextInFocus && searchQuery.isNotEmpty() -> {
-                startSearch(true)        // postState(Loading) -> *search* -> postState()
-            }
 
-            isEditTextInFocus && searchQuery.isEmpty() -> {
-                val searchHistory = searchHistoryInteractor.getHistoryList()
-                if (searchHistory.isNotEmpty()) {
-                    overrideStateLiveData(SearchState.History(searchHistoryInteractor.getHistoryList()))
-                } else {
-                    overrideStateLiveData(SearchState.Empty)
+        if (forceShowResults == false) {
+            when {
+                isEditTextInFocus && searchQuery.isNotEmpty() -> {
+                    startSearch(true)        // postState(Loading) -> *search* -> postState()
                 }
+
+                isEditTextInFocus && searchQuery.isEmpty() -> {
+                    val searchHistory = searchHistoryInteractor.getHistoryList()
+                    if (searchHistory.isNotEmpty()) {
+                        overrideStateLiveData(SearchState.History(searchHistoryInteractor.getHistoryList()))
+                    } else {
+                        overrideStateLiveData(SearchState.Empty)
+                    }
+                }
+
+                else -> overrideStateLiveData(SearchState.Empty)
             }
 
-            else -> overrideStateLiveData(SearchState.Empty)
+        } else {
+            overrideStateLiveData(SearchState.SearchResults(savedSearchResults))
         }
+    }
+
+    fun onReturnFromPlayer() {
+        forceShowResults = savedSearchResults.isNotEmpty()
     }
 
     companion object {
