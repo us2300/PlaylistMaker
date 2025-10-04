@@ -45,8 +45,4 @@ class TrackAdapter(
         }
         return current
     }
-
-    companion object {
-        const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
 }

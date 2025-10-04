@@ -5,12 +5,16 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TrackSearchInteractor
 import com.example.playlistmaker.search.domain.consumer.TrackConsumer
 import com.example.playlistmaker.search.domain.entity.Resource
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.ui.entity.SearchState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val trackSearchInteractor: TrackSearchInteractor,
@@ -21,7 +25,7 @@ class SearchViewModel(
 
     private var searchQuery: String = ""
     private var isEditTextInFocus: Boolean = false
-    private var forceShowResults: Boolean = false
+    private var isForceShowResults: Boolean = false
 
     private val savedSearchResults = mutableListOf<Track>()
 
@@ -48,13 +52,6 @@ class SearchViewModel(
                 }
             }
         }
-    }
-
-    private val searchRunnable = Runnable { searchRequest(searchQuery) }
-
-    override fun onCleared() {
-        super.onCleared()
-        handler.removeCallbacks(searchRunnable)
     }
 
     fun onEditTextFocusChange(hasFocus: Boolean) {
@@ -91,10 +88,12 @@ class SearchViewModel(
 
     private fun startSearch(isDebounce: Boolean) {
         if (isDebounce) {
-            handler.removeCallbacks(searchRunnable)
-            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+            viewModelScope.launch {
+                delay(SEARCH_DEBOUNCE_DELAY)
+                searchRequest(searchQuery)
+            }
         } else {
-            handler.post(searchRunnable)
+            searchRequest(searchQuery)
         }
     }
 
@@ -104,7 +103,7 @@ class SearchViewModel(
 
     private fun updateState() {
 
-        if (forceShowResults == false) {
+        if (!isForceShowResults) {
             when {
                 isEditTextInFocus && searchQuery.isNotEmpty() -> {
                     startSearch(true)        // postState(Loading) -> *search* -> postState()
@@ -128,7 +127,7 @@ class SearchViewModel(
     }
 
     fun onReturnFromPlayer() {
-        forceShowResults = savedSearchResults.isNotEmpty()
+        isForceShowResults = savedSearchResults.isNotEmpty()
     }
 
     companion object {
