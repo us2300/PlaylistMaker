@@ -64,8 +64,9 @@ class PlayerViewModel(
     }
 
     private fun startTimer() {
-        while (screenStateLiveData.value?.getPlayerState() is PlayerState.PLAYING) {
-            timerJob = viewModelScope.launch {
+        timerJob = viewModelScope.launch {
+
+            while (screenStateLiveData.value?.getPlayerState() is PlayerState.PLAYING) {
                 delay(TIME_REFRESH_DELAY)
                 val currentPosition: String = playerInteractor.getCurrentPositionConverted()
                 val currentScreenState: PlayerScreenState =
