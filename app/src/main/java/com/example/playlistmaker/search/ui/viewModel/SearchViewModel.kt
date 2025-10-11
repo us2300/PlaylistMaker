@@ -1,14 +1,11 @@
 package com.example.playlistmaker.search.ui.viewModel
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TrackSearchInteractor
-import com.example.playlistmaker.search.domain.consumer.TrackConsumer
 import com.example.playlistmaker.search.domain.entity.Resource
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.ui.entity.SearchState
@@ -21,7 +18,7 @@ class SearchViewModel(
     private val searchHistoryInteractor: SearchHistoryInteractor
 ) : ViewModel() {
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var searchJob: Job? = null
 
     private var searchQuery: String = ""
     private var isEditTextInFocus: Boolean = false
@@ -31,28 +28,6 @@ class SearchViewModel(
 
     private var searchStateLiveData = MutableLiveData<SearchState>(SearchState.Empty)
     fun observeSearchState(): LiveData<SearchState> = searchStateLiveData
-
-    private val trackSearchConsumer = TrackConsumer { result ->
-        handler.post {
-            when (result) {
-                is Resource.Error -> {
-                    savedSearchResults.clear()
-                    overrideStateLiveData(SearchState.PlaceHolder.NetworkError())
-                }
-
-                is Resource.Success -> {
-                    if (result.results.isEmpty()) {
-                        savedSearchResults.clear()
-                        overrideStateLiveData(SearchState.PlaceHolder.NothingFound())
-                    } else {
-                        savedSearchResults.clear()
-                        savedSearchResults.addAll(result.results)
-                        overrideStateLiveData(SearchState.SearchResults(result.results))
-                    }
-                }
-            }
-        }
-    }
 
     fun onEditTextFocusChange(hasFocus: Boolean) {
         isEditTextInFocus = hasFocus
@@ -83,12 +58,36 @@ class SearchViewModel(
             return
         }
         overrideStateLiveData(SearchState.Loading)
-        trackSearchInteractor.searchTracks(searchText, trackSearchConsumer)
+
+        viewModelScope.launch {
+            trackSearchInteractor
+                .searchTracks(searchText)
+                .collect { result ->
+                    when (result) {
+                        is Resource.Error -> {
+                            savedSearchResults.clear()
+                            overrideStateLiveData(SearchState.PlaceHolder.NetworkError())
+                        }
+
+                        is Resource.Success -> {
+                            if (result.results.isEmpty()) {
+                                savedSearchResults.clear()
+                                overrideStateLiveData(SearchState.PlaceHolder.NothingFound())
+                            } else {
+                                savedSearchResults.clear()
+                                savedSearchResults.addAll(result.results)
+                                overrideStateLiveData(SearchState.SearchResults(result.results))
+                            }
+                        }
+                    }
+                }
+        }
     }
 
     private fun startSearch(isDebounce: Boolean) {
+        searchJob?.cancel()
         if (isDebounce) {
-            viewModelScope.launch {
+            searchJob = viewModelScope.launch {
                 delay(SEARCH_DEBOUNCE_DELAY)
                 searchRequest(searchQuery)
             }
