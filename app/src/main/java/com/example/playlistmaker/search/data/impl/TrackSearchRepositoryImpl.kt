@@ -1,16 +1,20 @@
 package com.example.playlistmaker.search.data.impl
 
 import com.example.playlistmaker.search.data.NetworkClient
+import com.example.playlistmaker.search.data.db.AppDataBase
 import com.example.playlistmaker.search.data.dto.TrackSearchRequest
 import com.example.playlistmaker.search.data.dto.TrackSearchResponse
 import com.example.playlistmaker.search.data.mapper.TrackListFromDtoMapper
-import com.example.playlistmaker.search.domain.api.TracksRepository
+import com.example.playlistmaker.search.domain.api.TrackSearchRepository
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.domain.entity.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
+class TrackSearchRepositoryImpl(
+    private val dataBase: AppDataBase,
+    private val networkClient: NetworkClient
+) : TrackSearchRepository {
     override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
 
         val response = networkClient.doRequest(TrackSearchRequest(expression))
@@ -22,7 +26,9 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
                 }
 
                 response.results.isNotEmpty() -> {
-                    emit(Resource.Success(results = TrackListFromDtoMapper.map(response.results)))
+                    val allFavoritesIds = dataBase.trackDao().getAllTrackIds()
+                    val results = TrackListFromDtoMapper.map(response.results, allFavoritesIds)
+                    emit(Resource.Success(results))
                 }
 
                 else -> {

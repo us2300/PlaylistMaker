@@ -6,7 +6,7 @@ interface SearchHistoryRepository {
 
     fun saveTrackToHistory(track: TrackDto)
 
-    fun getHistoryList(): List<TrackDto>
+    suspend fun getHistoryList(): List<TrackDto>
 
     fun clearHistory()
 }

@@ -6,7 +6,7 @@ interface SearchHistoryInteractor {
 
     fun saveTrackToHistory(track: Track)
 
-    fun getHistoryList(): MutableList<Track>
+    suspend fun getHistoryList(): MutableList<Track>
 
     fun clearHistory()
 }

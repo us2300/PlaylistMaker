@@ -3,6 +3,7 @@ package com.example.playlistmaker.di
 import com.example.playlistmaker.mediateka.ui.viewModel.FavoritesViewModel
 import com.example.playlistmaker.mediateka.ui.viewModel.PlaylistsViewModel
 import com.example.playlistmaker.player.ui.viewModel.PlayerViewModel
+import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.ui.viewModel.SearchViewModel
 import com.example.playlistmaker.settings.ui.viewModel.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -28,7 +29,8 @@ val viewModelModule = module {
     viewModel<PlayerViewModel> { (url: String?) ->
 
         PlayerViewModel(
-            playerInteractor = get { parametersOf(url) }
+            playerInteractor = get { parametersOf(url) },
+            tracksDbInteractor = get()
         )
     }
 

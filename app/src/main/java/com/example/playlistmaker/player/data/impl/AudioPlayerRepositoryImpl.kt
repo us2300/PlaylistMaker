@@ -1,36 +1,44 @@
 package com.example.playlistmaker.player.data.impl
 
 import android.media.MediaPlayer
+import android.util.Log
 import com.example.playlistmaker.player.domain.api.AudioPlayerRepository
 import com.example.playlistmaker.player.domain.entity.PlayerState
 import com.example.playlistmaker.player.domain.listener.PlayerStateListener
 
-class AudioPlayerRepositoryImpl(private val previewUrl: String) : AudioPlayerRepository {
+class AudioPlayerRepositoryImpl() : AudioPlayerRepository {
 
-    private val player = MediaPlayer()
+    private var player: MediaPlayer? = null
 
     private var playerState: PlayerState = PlayerState.DEFAULT
     private var playerStateListener: PlayerStateListener? = null
 
-
-    init {
-        preparePlayer()
-    }
-
     override fun startPlayer() {
-        player.start()
+        player?.start()
         playerState = PlayerState.PLAYING
         notifyListener()
     }
 
     override fun pausePlayer() {
-        player.pause()
-        playerState = PlayerState.PAUSED
-        notifyListener()
+        player?.let { player ->
+            try {
+                if (isValidStateForPause()) {
+                    player.pause()
+                    playerState = PlayerState.PAUSED
+                    notifyListener()
+                }
+            } catch (e: IllegalStateException) {
+                Log.e("AudioPlayer", "Cannot pause in current state", e)
+                recoverFromError()
+            }
+        }
+//        player?.pause()
+//        playerState = PlayerState.PAUSED
+//        notifyListener()
     }
 
     override fun getCurrentPosition(): Int {
-        return player.currentPosition
+        return player?.currentPosition ?: -1
     }
 
     override fun getPlayerState(): PlayerState {
@@ -38,24 +46,39 @@ class AudioPlayerRepositoryImpl(private val previewUrl: String) : AudioPlayerRep
     }
 
     override fun releasePlayer() {
-        player.release()
+        player?.release()
+        player = null
+        playerState = PlayerState.DEFAULT
     }
 
     override fun setPlayerStateListener(listener: PlayerStateListener) {
         this.playerStateListener = listener
     }
 
-    private fun preparePlayer() {
-        player.setDataSource(previewUrl)
-        player.setOnPreparedListener {
-            playerState = PlayerState.PREPARED
-            notifyListener()
+    override fun preparePlayer(url: String?) {
+        try {
+            player = MediaPlayer()
+            player?.setDataSource(url)
+            player?.setOnPreparedListener {
+                playerState = PlayerState.PREPARED
+                notifyListener()
+            }
+            player?.setOnCompletionListener {
+                playerState = PlayerState.PREPARED
+                notifyListener()
+            }
+            player?.prepareAsync()
+        } catch (e: Exception) {
+            throw e
         }
-        player.setOnCompletionListener {
-            playerState = PlayerState.PREPARED
-            notifyListener()
-        }
-        player.prepareAsync()
+    }
+
+    private fun isValidStateForPause(): Boolean {
+        return player?.isPlaying == true
+    }
+
+    private fun recoverFromError() {
+        releasePlayer()
     }
 
     private fun notifyListener() {
