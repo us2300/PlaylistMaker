@@ -11,6 +11,7 @@ import com.example.playlistmaker.player.ui.entity.PlayerScreenState
 import com.example.playlistmaker.search.domain.api.TracksDbInteractor
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.util.SingleLiveEvent
+import com.example.playlistmaker.util.TIME_REFRESH_DELAY
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -92,14 +93,14 @@ class PlayerViewModel(
 
         if (isFavorite) {
             viewModelScope.launch {
-                tracksDbInteractor.deleteFromFavorites(track!!)
                 track!!.isFavorite = false
+                tracksDbInteractor.deleteFromFavorites(track!!)
                 updateIsFavorite()
             }
         } else {
             viewModelScope.launch {
-                tracksDbInteractor.addToFavorites(track!!)
                 track!!.isFavorite = true
+                tracksDbInteractor.addToFavorites(track!!)
                 updateIsFavorite()
             }
         }
@@ -151,6 +152,5 @@ class PlayerViewModel(
 
     companion object {
         private const val PROGRESS_TIME_DEFAULT = "00:00"
-        private const val TIME_REFRESH_DELAY = 300L
     }
 }
