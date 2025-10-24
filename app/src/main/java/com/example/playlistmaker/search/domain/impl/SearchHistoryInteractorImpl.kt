@@ -5,6 +5,8 @@ import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.domain.converters.TrackConverter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepository) :
     SearchHistoryInteractor {
@@ -14,9 +16,10 @@ class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepositor
         repository.saveTrackToHistory(dto)
     }
 
-    override suspend fun getHistoryList(): MutableList<Track> {
-        val dto = repository.getHistoryList()
-        return TrackListFromDtoMapper.map(dto).toMutableList()
+    override fun getHistoryList(): Flow<MutableList<Track>> {
+        return repository.getHistoryList().map { listDto ->
+            TrackListFromDtoMapper.map(listDto).toMutableList()
+        }
     }
 
     override fun clearHistory() {

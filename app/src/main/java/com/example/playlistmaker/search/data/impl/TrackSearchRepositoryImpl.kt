@@ -6,10 +6,11 @@ import com.example.playlistmaker.search.data.dto.TrackSearchRequest
 import com.example.playlistmaker.search.data.dto.TrackSearchResponse
 import com.example.playlistmaker.search.data.mapper.TrackListFromDtoMapper
 import com.example.playlistmaker.search.domain.api.TrackSearchRepository
-import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.domain.entity.Resource
+import com.example.playlistmaker.search.domain.entity.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class TrackSearchRepositoryImpl(
     private val dataBase: AppDataBase,
@@ -26,9 +27,13 @@ class TrackSearchRepositoryImpl(
                 }
 
                 response.results.isNotEmpty() -> {
-                    val allFavoritesIds = dataBase.trackDao().getAllTrackIds()
-                    val results = TrackListFromDtoMapper.map(response.results, allFavoritesIds)
-                    emit(Resource.Success(results))
+                    dataBase.trackDao().getAllTrackIds()
+                        .map { allFavoriteIds ->
+                            TrackListFromDtoMapper.map(response.results, allFavoriteIds)
+                        }
+                        .collect { results ->
+                            emit(Resource.Success(results))
+                        }
                 }
 
                 else -> {

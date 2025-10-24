@@ -111,11 +111,12 @@ class SearchViewModel(
 
                 isEditTextInFocus && searchQuery.isEmpty() -> {
                     viewModelScope.launch {
-                        val searchHistory = searchHistoryInteractor.getHistoryList()
-                        if (searchHistory.isNotEmpty()) {
-                            overrideStateLiveData(SearchState.History(searchHistoryInteractor.getHistoryList()))
-                        } else {
-                            overrideStateLiveData(SearchState.Empty)
+                        searchHistoryInteractor.getHistoryList().collect { searchHistoryList ->
+                            if (searchHistoryList.isNotEmpty()) {
+                                overrideStateLiveData(SearchState.History(searchHistoryList))
+                            } else {
+                                overrideStateLiveData(SearchState.Empty)
+                            }
                         }
                     }
                 }

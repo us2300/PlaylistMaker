@@ -57,7 +57,7 @@ val repositoryModule = module {
         AudioPlayerRepositoryImpl()
     }
 
-    single<TracksDbRepository> {
+    factory<TracksDbRepository> {
         TracksDbRepositoryImpl(
             dataBase = get()
         )

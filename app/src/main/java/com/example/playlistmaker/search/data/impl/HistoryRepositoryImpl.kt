@@ -5,6 +5,8 @@ import com.example.playlistmaker.search.data.db.AppDataBase
 import com.example.playlistmaker.search.data.dto.TrackDto
 import com.example.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 const val SEARCH_HISTORY = "search_history"
 
@@ -30,15 +32,16 @@ class SearchHistoryRepositoryImpl(
         saveHistoryToPrefs()
     }
 
-    override suspend fun getHistoryList(): MutableList<TrackDto> {
-        val allFavoritesIds = dataBase.trackDao().getAllTrackIds()
-        return tracksHistory.map { trackDto ->
-            trackDto.copy(
-                isFavorite = allFavoritesIds.contains(
-                    trackDto.trackId
+    override fun getHistoryList(): Flow<MutableList<TrackDto>> {
+        return dataBase.trackDao().getAllTrackIds().map { allFavoriteIds ->
+            tracksHistory.map { trackDto ->
+                trackDto.copy(
+                    isFavorite = allFavoriteIds.contains(
+                        trackDto.trackId
+                    )
                 )
-            )
-        }.toMutableList()
+            }.toMutableList()
+        }
     }
 
     override fun clearHistory() {

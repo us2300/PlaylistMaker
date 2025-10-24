@@ -45,7 +45,7 @@ class FavoritesFragment : Fragment() {
 
         binding!!.favoritesContentLayout.apply {
             content.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             content.adapter = adapter
         }
 
