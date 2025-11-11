@@ -21,7 +21,7 @@ interface MediaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTrack(track: TrackEntity)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun updateTrack(track: TrackEntity)
 
     @Delete(entity = TrackEntity::class)
@@ -50,6 +50,9 @@ interface MediaDao {
     @Query("SELECT trackId FROM track_table")
     fun getAllTrackIds(): Flow<List<Int>>
 
+    @Query("SELECT * FROM track_table WHERE trackId =:trackId")
+    suspend fun getTrackById(trackId: Int): TrackEntity?
+
     // Работа с плейлистами
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlaylist(playlistEntity: PlaylistEntity)
@@ -68,12 +71,15 @@ interface MediaDao {
 
     @Transaction
     suspend fun addTrackToPlaylist(playlistId: Int, track: TrackEntity): Boolean {
-        val exists = isTrackInPlaylist(playlistId, track.trackId) > 0
-        if (exists) {
+        val isInPlaylist = isTrackInPlaylist(playlistId, track.trackId) > 0
+        if (isInPlaylist) {
             return false
         }
 
-        insertTrack(track)
+        val existingTrack = getTrackById(track.trackId)
+        if (existingTrack == null) {
+            insertTrack(track)
+        }
 
         insertPlaylistTrackRelation(PlaylistTrackRelation(playlistId, track.trackId))
         return true

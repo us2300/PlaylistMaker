@@ -6,10 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.mediateka.favorites.ui.entity.FavoritesState
-import com.example.playlistmaker.mediateka.favorites.domain.api.TracksDbInteractor
+import com.example.playlistmaker.mediateka.favorites.domain.api.TracksInteractor
 import kotlinx.coroutines.launch
 
-class FavoritesViewModel(private val dataBaseInteractor: TracksDbInteractor) : ViewModel() {
+class FavoritesViewModel(private val dataBaseInteractor: TracksInteractor) : ViewModel() {
 
     private val _stateLiveData = MutableLiveData<FavoritesState>()
     fun observeState(): LiveData<FavoritesState> = _stateLiveData

@@ -2,13 +2,13 @@ package com.example.playlistmaker.mediateka.favorites.data.impl
 
 import com.example.playlistmaker.app.AppDataBase
 import com.example.playlistmaker.mediateka.favorites.db.entity.TrackEntity
-import com.example.playlistmaker.mediateka.favorites.domain.api.TracksDbRepository
+import com.example.playlistmaker.mediateka.favorites.domain.api.TracksRepository
 import com.example.playlistmaker.search.domain.converters.TrackConverter
 import com.example.playlistmaker.search.domain.entity.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class TracksDbRepositoryImpl(val dataBase: AppDataBase) : TracksDbRepository {
+class TracksRepositoryImpl(val dataBase: AppDataBase) : TracksRepository {
 
     private val mediaDao = dataBase.mediaDao()
 

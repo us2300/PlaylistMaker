@@ -1,12 +1,12 @@
 package com.example.playlistmaker.mediateka.favorites.domain.impl
 
-import com.example.playlistmaker.mediateka.favorites.domain.api.TracksDbInteractor
-import com.example.playlistmaker.mediateka.favorites.domain.api.TracksDbRepository
+import com.example.playlistmaker.mediateka.favorites.domain.api.TracksInteractor
+import com.example.playlistmaker.mediateka.favorites.domain.api.TracksRepository
 import com.example.playlistmaker.search.domain.converters.TrackConverter.convertToDbEntity
 import com.example.playlistmaker.search.domain.entity.Track
 import kotlinx.coroutines.flow.Flow
 
-class TracksDbInteractorImpl(val repository: TracksDbRepository) : TracksDbInteractor {
+class TracksInteractorImpl(val repository: TracksRepository) : TracksInteractor {
     override suspend fun addToDataBase(track: Track) {
         repository.addToDataBase(convertToDbEntity(track))
     }

@@ -162,10 +162,10 @@ class PlayerFragment : Fragment() {
     private fun renderState(state: PlayerScreenState) {
         binding!!.apply {
             showPlaying(state)
-            showFavoriteButtonActive(state.isFavorite())
-            listeningTime.text = state.getCurrentPosition()
-            showBottomSheet(state.isBottomSheetVisible())
-            adapter.updatePlaylists(state.getPlaylists())
+            showFavoriteButtonActive(state.isFavorite)
+            listeningTime.text = state.currentPosition
+            showBottomSheet(state.isBottomSheetVisible)
+            adapter.updatePlaylists(state.playlists)
         }
     }
 
@@ -179,7 +179,7 @@ class PlayerFragment : Fragment() {
 
     private fun showPlaying(state: PlayerScreenState) {
         binding!!.apply {
-            if (state.isPlayButtonShown()) {
+            if (state.isPlayButtonShown) {
                 playButton.setImageResource(R.drawable.button_play)
             } else {
                 playButton.setImageResource(R.drawable.button_pause)

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistDbInteractor
+import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistsInteractor
 import com.example.playlistmaker.mediateka.playlists.domain.api.StorageInteractor
 import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
 import com.example.playlistmaker.sharing.domain.api.StringResourceProvider
@@ -13,7 +13,7 @@ import com.example.playlistmaker.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class NewPlaylistViewModel(
-    private val playlistDbInteractor: PlaylistDbInteractor,
+    private val playlistsInteractor: PlaylistsInteractor,
     private val storageInteractor: StorageInteractor,
     private val stringResProvider: StringResourceProvider
 ) : ViewModel() {
@@ -51,7 +51,7 @@ class NewPlaylistViewModel(
                 savedImageUri = storageInteractor.saveImageToPrivateStorage(playlistCoverUri!!)
             }
             if (playlistTitle.isNotEmpty()) {
-                playlistDbInteractor.createPlaylist(
+                playlistsInteractor.createPlaylist(
                     Playlist(
                         id = 0,
                         tracks = null,

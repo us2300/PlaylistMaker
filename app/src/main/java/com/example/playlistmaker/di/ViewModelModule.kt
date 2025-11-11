@@ -30,8 +30,8 @@ val viewModelModule = module {
 
         PlayerViewModel(
             playerInteractor = get { parametersOf(url) },
-            tracksDbInteractor = get(),
-            playlistDbInteractor = get(),
+            tracksInteractor = get(),
+            playlistsInteractor = get(),
             stringResourceProvider = get()
         )
     }
@@ -44,13 +44,13 @@ val viewModelModule = module {
 
     viewModel<PlaylistsViewModel> {
         PlaylistsViewModel(
-            playlistDbInteractor = get()
+            playlistsInteractor = get()
         )
     }
 
     viewModel<NewPlaylistViewModel> {
         NewPlaylistViewModel(
-            playlistDbInteractor = get(),
+            playlistsInteractor = get(),
             storageInteractor = get(),
             stringResProvider = get()
         )

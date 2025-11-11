@@ -5,7 +5,7 @@ import com.example.playlistmaker.mediateka.playlists.db.entity.PlaylistEntity
 import com.example.playlistmaker.mediateka.playlists.db.entity.PlaylistWithTracks
 import kotlinx.coroutines.flow.Flow
 
-interface PlaylistDbRepository {
+interface PlaylistsRepository {
 
     suspend fun createPlaylist(playlist: PlaylistEntity)
 

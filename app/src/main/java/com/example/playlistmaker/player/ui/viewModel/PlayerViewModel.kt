@@ -8,8 +8,8 @@ import com.example.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.example.playlistmaker.player.domain.entity.PlayerState
 import com.example.playlistmaker.player.domain.listener.PlayerStateListener
 import com.example.playlistmaker.player.ui.entity.PlayerScreenState
-import com.example.playlistmaker.mediateka.favorites.domain.api.TracksDbInteractor
-import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistDbInteractor
+import com.example.playlistmaker.mediateka.favorites.domain.api.TracksInteractor
+import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistsInteractor
 import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.sharing.domain.api.StringResourceProvider
@@ -21,15 +21,15 @@ import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val playerInteractor: AudioPlayerInteractor,
-    private val tracksDbInteractor: TracksDbInteractor,
-    private val playlistDbInteractor: PlaylistDbInteractor,
+    private val tracksInteractor: TracksInteractor,
+    private val playlistsInteractor: PlaylistsInteractor,
     private val stringResourceProvider: StringResourceProvider
 ) : ViewModel() {
 
     private var track: Track? = null
 
     private val onStateChangedListener = PlayerStateListener { newPlayerState ->
-        val currentScreenState = _screenStateLiveData.value ?: PlayerScreenState.DEFAULT
+        val currentScreenState = _screenStateLiveData.value ?: PlayerScreenState.Default
         _screenStateLiveData.value = currentScreenState.copy(playerState = newPlayerState)
 
         if (newPlayerState == PlayerState.PREPARED) {
@@ -40,7 +40,7 @@ class PlayerViewModel(
 
     private var timerJob: Job? = null
 
-    private val _screenStateLiveData = MutableLiveData<PlayerScreenState>(PlayerScreenState.DEFAULT)
+    private val _screenStateLiveData = MutableLiveData<PlayerScreenState>(PlayerScreenState.Default)
     fun observeScreenState(): LiveData<PlayerScreenState> = _screenStateLiveData
 
     private val _toastMessageLiveData = SingleLiveEvent<String>()
@@ -60,7 +60,7 @@ class PlayerViewModel(
 
     fun updatePlaylists() {
         viewModelScope.launch {
-            playlistDbInteractor.getAllPlaylists().collect { playlists ->
+            playlistsInteractor.getAllPlaylists().collect { playlists ->
                 val currentState = _screenStateLiveData.value
                 _screenStateLiveData.value = currentState?.copy(playlists = playlists)
             }
@@ -103,7 +103,7 @@ class PlayerViewModel(
         if (track == null) {
             return
         }
-        val isFavoriteCurrent = _screenStateLiveData.value!!.isFavorite()
+        val isFavoriteCurrent = _screenStateLiveData.value!!.isFavorite
 
         viewModelScope.launch {
             track!!.isFavorite = !isFavoriteCurrent
@@ -111,13 +111,13 @@ class PlayerViewModel(
         if (isFavoriteCurrent) {
             viewModelScope.launch {
                 track!!.isFavorite = false
-                tracksDbInteractor.deleteFromFavorites(track!!)
+                tracksInteractor.deleteFromFavorites(track!!)
                 updateIsFavorite()
             }
         } else {
             viewModelScope.launch {
                 track!!.isFavorite = true
-                tracksDbInteractor.addToDataBase(track!!)
+                tracksInteractor.addToDataBase(track!!)
                 updateIsFavorite()
             }
         }
@@ -152,7 +152,7 @@ class PlayerViewModel(
             return
         }
         viewModelScope.launch {
-            val isSuccessfullyAdded = playlistDbInteractor.addTrackToPlaylist(playlist, track!!)
+            val isSuccessfullyAdded = playlistsInteractor.addTrackToPlaylist(playlist, track!!)
             if (!isSuccessfullyAdded) {
                 val message = stringResourceProvider.getTrackAlreadyAddedMsg(playlist.title)
                 _toastMessageLiveData.value = message
@@ -172,7 +172,7 @@ class PlayerViewModel(
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
 
-            while (_screenStateLiveData.value?.getPlayerState() is PlayerState.PLAYING) {
+            while (_screenStateLiveData.value?.playerState is PlayerState.PLAYING) {
                 delay(TIME_REFRESH_DELAY)
                 val currentPosition: String = playerInteractor.getCurrentPositionConverted()
                 val currentScreenState: PlayerScreenState = _screenStateLiveData.value!!
@@ -188,7 +188,7 @@ class PlayerViewModel(
 
     private fun resetTimer() {
         timerJob?.cancel()
-        val currentScreenState = _screenStateLiveData.value ?: PlayerScreenState.DEFAULT
+        val currentScreenState = _screenStateLiveData.value ?: PlayerScreenState.Default
         _screenStateLiveData.value =
             currentScreenState.copy(currentPosition = PROGRESS_TIME_DEFAULT)
     }
@@ -197,7 +197,7 @@ class PlayerViewModel(
         if (track == null) {
             return
         } else {
-            val currentScreenState = _screenStateLiveData.value ?: PlayerScreenState.DEFAULT
+            val currentScreenState = _screenStateLiveData.value ?: PlayerScreenState.Default
             _screenStateLiveData.value = currentScreenState.copy(isFavorite = track!!.isFavorite)
         }
     }

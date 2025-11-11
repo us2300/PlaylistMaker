@@ -1,10 +1,10 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.mediateka.favorites.domain.api.TracksDbInteractor
-import com.example.playlistmaker.mediateka.favorites.domain.impl.TracksDbInteractorImpl
-import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistDbInteractor
+import com.example.playlistmaker.mediateka.favorites.domain.api.TracksInteractor
+import com.example.playlistmaker.mediateka.favorites.domain.impl.TracksInteractorImpl
+import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistsInteractor
 import com.example.playlistmaker.mediateka.playlists.domain.api.StorageInteractor
-import com.example.playlistmaker.mediateka.playlists.domain.impl.PlaylistDbInteractorImpl
+import com.example.playlistmaker.mediateka.playlists.domain.impl.PlaylistsInteractorImpl
 import com.example.playlistmaker.mediateka.playlists.domain.impl.StorageInteractorImpl
 import com.example.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.example.playlistmaker.player.domain.impl.AudioPlayerInteractorImpl
@@ -55,14 +55,14 @@ val interactorModule = module {
         }
     }
 
-    single<TracksDbInteractor> {
-        TracksDbInteractorImpl(
+    single<TracksInteractor> {
+        TracksInteractorImpl(
             repository = get()
         )
     }
 
-    factory<PlaylistDbInteractor> {
-        PlaylistDbInteractorImpl(
+    factory<PlaylistsInteractor> {
+        PlaylistsInteractorImpl(
             repository = get()
         )
     }

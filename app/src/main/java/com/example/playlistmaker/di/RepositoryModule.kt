@@ -3,13 +3,13 @@ package com.example.playlistmaker.di
 import com.example.playlistmaker.player.data.impl.AudioPlayerRepositoryImpl
 import com.example.playlistmaker.player.domain.api.AudioPlayerRepository
 import com.example.playlistmaker.search.data.impl.SearchHistoryRepositoryImpl
-import com.example.playlistmaker.mediateka.favorites.data.impl.TracksDbRepositoryImpl
+import com.example.playlistmaker.mediateka.favorites.data.impl.TracksRepositoryImpl
 import com.example.playlistmaker.search.data.impl.TrackSearchRepositoryImpl
 import com.example.playlistmaker.search.domain.api.SearchHistoryRepository
-import com.example.playlistmaker.mediateka.favorites.domain.api.TracksDbRepository
-import com.example.playlistmaker.mediateka.playlists.data.impl.PlaylistDbRepositoryImpl
+import com.example.playlistmaker.mediateka.favorites.domain.api.TracksRepository
+import com.example.playlistmaker.mediateka.playlists.data.impl.PlaylistsRepositoryImpl
 import com.example.playlistmaker.mediateka.playlists.data.impl.StorageRepositoryImpl
-import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistDbRepository
+import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistsRepository
 import com.example.playlistmaker.mediateka.playlists.domain.api.StorageRepository
 import com.example.playlistmaker.search.domain.api.TrackSearchRepository
 import com.example.playlistmaker.settings.data.impl.ThemeRepositoryImpl
@@ -61,14 +61,14 @@ val repositoryModule = module {
         AudioPlayerRepositoryImpl()
     }
 
-    factory<TracksDbRepository> {
-        TracksDbRepositoryImpl(
+    factory<TracksRepository> {
+        TracksRepositoryImpl(
             dataBase = get()
         )
     }
 
-    factory<PlaylistDbRepository> {
-        PlaylistDbRepositoryImpl(
+    factory<PlaylistsRepository> {
+        PlaylistsRepositoryImpl(
             dataBase = get()
         )
     }

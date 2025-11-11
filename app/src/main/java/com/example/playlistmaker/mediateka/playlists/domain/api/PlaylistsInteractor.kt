@@ -4,7 +4,7 @@ import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
 import com.example.playlistmaker.search.domain.entity.Track
 import kotlinx.coroutines.flow.Flow
 
-interface PlaylistDbInteractor {
+interface PlaylistsInteractor {
 
     suspend fun createPlaylist(playlist: Playlist)
 

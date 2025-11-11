@@ -1,7 +1,7 @@
 package com.example.playlistmaker.mediateka.playlists.domain.impl
 
-import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistDbInteractor
-import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistDbRepository
+import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistsInteractor
+import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistsRepository
 import com.example.playlistmaker.mediateka.playlists.domain.converter.PlaylistConverter
 import com.example.playlistmaker.mediateka.playlists.domain.converter.PlaylistConverter.toPlaylistEntity
 import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
@@ -10,8 +10,8 @@ import com.example.playlistmaker.search.domain.entity.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class PlaylistDbInteractorImpl(private val repository: PlaylistDbRepository) :
-    PlaylistDbInteractor {
+class PlaylistsInteractorImpl(private val repository: PlaylistsRepository) :
+    PlaylistsInteractor {
     override suspend fun createPlaylist(playlist: Playlist) {
         repository.createPlaylist(toPlaylistEntity(playlist))
     }
