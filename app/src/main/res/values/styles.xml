@@ -135,6 +135,8 @@
     </style>
 
     <style name="CustomDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="titleTextColor">@color/yp_black</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="buttonBarPositiveButtonStyle">@style/CustomDialogButton</item>
         <item name="buttonBarNegativeButtonStyle">@style/CustomDialogButton</item>
         <item name="buttonBarNeutralButtonStyle">@style/CustomDialogButton</item>

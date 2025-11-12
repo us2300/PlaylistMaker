@@ -92,4 +92,5 @@
     <dimen name="playlist_menu_button_margin_start">16dp</dimen>
     <dimen name="playlist_buttons_margin_top">16dp</dimen>
     <dimen name="playlist_recycler_view_margin_top">12dp</dimen>
+    <dimen name="playlist_bottom_sheet_margin_top">24dp</dimen>
 </resources>

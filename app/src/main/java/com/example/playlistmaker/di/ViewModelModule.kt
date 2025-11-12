@@ -57,11 +57,11 @@ val viewModelModule = module {
         )
     }
 
-    viewModel<PlaylistVewModel> {
+    viewModel<PlaylistVewModel> { (playlistId: Int) ->
         PlaylistVewModel(
-            storageInteractor = get(),
             playlistsInteractor = get(),
-            sharingInteractor = get()
+            sharingInteractor = get(),
+            playlistId = playlistId
         )
     }
 }

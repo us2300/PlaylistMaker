@@ -63,6 +63,16 @@ interface MediaDao {
     @Query("SELECT * FROM track_table WHERE trackId =:trackId")
     suspend fun getTrackById(trackId: Int): TrackEntity?
 
+    @Query(
+        """
+        SELECT t.* 
+FROM playlists_tracks pt 
+JOIN track_table t 
+ON pt.trackId = t.trackId 
+WHERE pt.playlistId = :playlistId"""
+    )
+    fun getAllTracksByPlaylistId(playlistId: Int): Flow<List<TrackEntity>?>
+
     // Работа с плейлистами
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlaylist(playlistEntity: PlaylistEntity)
@@ -71,7 +81,13 @@ interface MediaDao {
     @Query("SELECT * FROM playlist_table")
     fun getAllPlaylists(): Flow<List<PlaylistWithTracks>>
 
+    @Query("SELECT * FROM playlist_table WHERE id = :playlistId")
+    fun getPlaylistById(playlistId: Int): Flow<PlaylistWithTracks>
+
     // Треки - плейлисты
+
+    @Query("DELETE FROM playlists_tracks WHERE playlistId = :playlistId AND trackId = :trackId")
+    suspend fun deletePlaylistTrackRelation(playlistId: Int, trackId: Int)
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertPlaylistTrackRelation(relation: PlaylistTrackRelation)
@@ -93,5 +109,22 @@ interface MediaDao {
 
         insertPlaylistTrackRelation(PlaylistTrackRelation(playlistId, track.trackId))
         return true
+    }
+
+    @Transaction
+    suspend fun removeTrackFromPlaylist(playlistId: Int, trackId: Int) {
+        deletePlaylistTrackRelation(playlistId, trackId)
+
+        // Проверка, остался ли трек в избранных
+        val track = getTrackById(trackId)
+        if (track != null && track.isFavorite == 0) {
+            // Проверка, есть ли трек в других плейлистах
+            val playlistCount = getPlaylistCountForTrack(trackId)
+
+            // Если не в любимых и не в плейлистах - удалить
+            if (playlistCount == 0) {
+                deleteTrack(track)
+            }
+        }
     }
 }

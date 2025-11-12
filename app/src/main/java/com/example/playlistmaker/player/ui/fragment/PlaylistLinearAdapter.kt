@@ -10,7 +10,7 @@ import com.example.playlistmaker.search.ui.fragment.LinearListLayoutItemViewHold
 import com.example.playlistmaker.util.ClickDebouncer
 
 class PlaylistLinearAdapter(
-    private val onItemClicked: (playlist: Playlist) -> Unit
+    val onItemClicked: (playlist: Playlist) -> Unit,
 ) : RecyclerView.Adapter<LinearListLayoutItemViewHolder>(), ClickDebouncer {
 
     override var isClickAllowed = true

@@ -57,7 +57,7 @@ object TrackConverter {
         )
     }
 
-    fun convertFromDbEntityList(dbList: List<TrackEntity>): List<Track> {
-        return dbList.map { trackEntity -> convertFromDbEntity(trackEntity) }
+    fun convertFromDbEntityList(dbList: List<TrackEntity>?): List<Track> {
+        return dbList?.map { trackEntity -> convertFromDbEntity(trackEntity) } ?: emptyList()
     }
 }
