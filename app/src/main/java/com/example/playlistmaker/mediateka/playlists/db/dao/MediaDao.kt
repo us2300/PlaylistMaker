@@ -21,6 +21,16 @@ interface MediaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTrack(track: TrackEntity)
 
+    @Transaction
+    suspend fun addTrackToFavorites(track: TrackEntity) {
+        val existingTrack = getTrackById(track.trackId)
+        if (existingTrack == null) {
+            insertTrack(track)
+        } else {
+            updateTrack(track.copy(isFavorite = 1))
+        }
+    }
+
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun updateTrack(track: TrackEntity)
 

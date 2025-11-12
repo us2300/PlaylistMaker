@@ -95,6 +95,11 @@ class NewPlaylistFragment : Fragment() {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
     private fun showCreateButtonEnabled(enabled: Boolean) {
         binding?.createButton?.isEnabled = enabled
     }

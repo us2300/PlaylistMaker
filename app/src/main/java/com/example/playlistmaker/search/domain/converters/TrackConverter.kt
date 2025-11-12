@@ -35,7 +35,8 @@ object TrackConverter {
             trackTimeConverted = track.trackTimeConverted,
             artworkUrl100 = track.artworkUrl100,
             previewUrl = track.previewUrl,
-            isFavorite = if (track.isFavorite) 1 else 0
+            isFavorite = if (track.isFavorite) 1 else 0,
+            trackTimeMillis = track.trackTimeMillis
         )
     }
 
@@ -51,7 +52,8 @@ object TrackConverter {
             trackTimeConverted = trackEntity.trackTimeConverted,
             artworkUrl100 = trackEntity.artworkUrl100,
             previewUrl = trackEntity.previewUrl,
-            isFavorite = trackEntity.isFavorite == 1
+            isFavorite = trackEntity.isFavorite == 1,
+            trackTimeMillis = trackEntity.trackTimeMillis
         )
     }
 

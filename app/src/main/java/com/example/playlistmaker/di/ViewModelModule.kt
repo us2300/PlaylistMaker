@@ -4,6 +4,7 @@ import com.example.playlistmaker.mediateka.favorites.ui.viewModel.FavoritesViewM
 import com.example.playlistmaker.mediateka.playlists.ui.viewModel.NewPlaylistViewModel
 import com.example.playlistmaker.mediateka.playlists.ui.viewModel.PlaylistsViewModel
 import com.example.playlistmaker.player.ui.viewModel.PlayerViewModel
+import com.example.playlistmaker.playlist.ui.viewModel.PlaylistVewModel
 import com.example.playlistmaker.search.ui.viewModel.SearchViewModel
 import com.example.playlistmaker.settings.ui.viewModel.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -53,6 +54,14 @@ val viewModelModule = module {
             playlistsInteractor = get(),
             storageInteractor = get(),
             stringResProvider = get()
+        )
+    }
+
+    viewModel<PlaylistVewModel> {
+        PlaylistVewModel(
+            storageInteractor = get(),
+            playlistsInteractor = get(),
+            sharingInteractor = get()
         )
     }
 }

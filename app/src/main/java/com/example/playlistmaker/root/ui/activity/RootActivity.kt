@@ -23,7 +23,7 @@ class RootActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             when (destination.id) {
-                R.id.playerFragment, R.id.newPlayerFragment -> {
+                R.id.playerFragment, R.id.newPlaylistFragment -> {
                     binding.bottomNavView.isGone = true
                     binding.navMenuTopLine.isGone = true
                 }
