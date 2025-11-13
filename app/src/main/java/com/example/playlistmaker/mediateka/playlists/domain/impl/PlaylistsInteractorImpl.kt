@@ -1,9 +1,7 @@
 package com.example.playlistmaker.mediateka.playlists.domain.impl
 
-import android.util.Log
 import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistsInteractor
 import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistsRepository
-import com.example.playlistmaker.mediateka.playlists.domain.converter.PlaylistConverter
 import com.example.playlistmaker.mediateka.playlists.domain.converter.PlaylistConverter.toPlaylist
 import com.example.playlistmaker.mediateka.playlists.domain.converter.PlaylistConverter.toPlaylistEntity
 import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
