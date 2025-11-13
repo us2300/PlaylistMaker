@@ -1,43 +1,82 @@
 package com.example.playlistmaker.playlist.ui.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.mediateka.playlists.domain.api.PlaylistsInteractor
-import com.example.playlistmaker.mediateka.playlists.domain.api.StorageInteractor
 import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
-import com.example.playlistmaker.playlist.ui.entity.PlaylistBottomSheetState
+import com.example.playlistmaker.playlist.ui.entity.PlaylistScreenState
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.sharing.domain.api.SharingInteractor
+import com.example.playlistmaker.sharing.domain.api.StringResourceProvider
+import com.example.playlistmaker.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class PlaylistVewModel(
     val playlistsInteractor: PlaylistsInteractor,
     val sharingInteractor: SharingInteractor,
-    val playlistId: Int
+    val stringResourceProvider: StringResourceProvider,
+    val playlist: Playlist
 ) : ViewModel() {
 
-    private val _bottomSheetState =
-        MutableLiveData<PlaylistBottomSheetState>(PlaylistBottomSheetState.Hidden)
+    private val playlistId = playlist.id
+
+    private val _playlistScreenState =
+        MutableLiveData<PlaylistScreenState>(PlaylistScreenState.Empty)
 
     private val _tracks = MutableLiveData<List<Track>>()
+    private val _playlist = MutableLiveData<Playlist>(playlist)
+    private val _shouldCloseScreen = SingleLiveEvent<Unit>()
+    private val _toastMessage = SingleLiveEvent<String>()
 
-    private val _playlist = MutableLiveData<Playlist>()
-
-    fun observeBottomSheetState(): LiveData<PlaylistBottomSheetState> = _bottomSheetState
+    fun observeBottomSheetState(): LiveData<PlaylistScreenState> = _playlistScreenState
     fun observeTracks(): LiveData<List<Track>> = _tracks
     fun observePlaylist(): LiveData<Playlist> = _playlist
+    fun observeShouldCloseScreen(): LiveData<Unit> = _shouldCloseScreen
+    fun observeToastMessage(): LiveData<String> = _toastMessage
 
     init {
-        loadPlaylist()
         loadTracks()
     }
 
-    private fun loadPlaylist() {
+    fun onMenuButtonClicked() {
+        _playlistScreenState.value = PlaylistScreenState.MenuBottomSheet
+    }
+
+    fun onSharing() {
+        if (_tracks.value.isNullOrEmpty()) {
+            _toastMessage.value = stringResourceProvider.getNoTracksInPlaylistToShareMsg()
+        } else {
+            sharingInteractor.sharePlaylist(_playlist.value!!)
+        }
+    }
+
+    fun onOverlayClicked() {
+        val tracks = _tracks.value
+        postContentBottomSheetOrEmpty(tracks ?: emptyList())
+    }
+
+    fun onDeleteTrack(track: Track) {
         viewModelScope.launch {
-            val playlist = playlistsInteractor.getPlaylistById(playlistId).collect {
+            playlistsInteractor.deleteTrackFromPlaylist(playlistId, track.trackId)
+            refreshPlaylist()
+            loadTracks()
+        }
+    }
+
+    fun onDeletePlaylist() {
+        viewModelScope.launch {
+            val currentPlaylist = _playlist.value!!
+
+            playlistsInteractor.deletePlaylist(currentPlaylist)
+            _shouldCloseScreen.postValue(Unit)
+        }
+    }
+
+    private fun refreshPlaylist() {
+        viewModelScope.launch {
+            playlistsInteractor.getPlaylistById(playlistId).collect {
                 _playlist.postValue(it)
             }
         }
@@ -46,25 +85,17 @@ class PlaylistVewModel(
     private fun loadTracks() {
         viewModelScope.launch {
             playlistsInteractor.getTracksByPlaylistId(playlistId).collect { tracks ->
-                updateBottomSheetState(tracks)
+                postContentBottomSheetOrEmpty(tracks)
                 _tracks.value = tracks
             }
         }
     }
 
-    private fun updateBottomSheetState(tracks: List<Track>) {
+    private fun postContentBottomSheetOrEmpty(tracks: List<Track>) {
         if (tracks.isNotEmpty()) {
-            _bottomSheetState.value = PlaylistBottomSheetState.Visible
+            _playlistScreenState.value = PlaylistScreenState.ContentBottomSheet
         } else {
-            _bottomSheetState.value = PlaylistBottomSheetState.Hidden
-        }
-    }
-
-    fun onDeleteTrack(track: Track) {
-        viewModelScope.launch {
-            playlistsInteractor.deleteTrackFromPlaylist(playlistId, track.trackId)
-            loadPlaylist()
-            loadTracks()
+            _playlistScreenState.value = PlaylistScreenState.Empty
         }
     }
 }

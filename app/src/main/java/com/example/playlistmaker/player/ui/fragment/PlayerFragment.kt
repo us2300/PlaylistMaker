@@ -108,11 +108,11 @@ class PlayerFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        binding?.overlay?.isVisible = true
+                        binding?.playerOverlay?.isVisible = true
                     }
 
                     else -> {
-                        binding?.overlay?.isGone = true
+                        binding?.playerOverlay?.isGone = true
                     }
                 }
             }
@@ -126,7 +126,7 @@ class PlayerFragment : Fragment() {
             }
         )
         binding!!.apply {
-            overlay.setOnClickListener {
+            playerOverlay.setOnClickListener {
                 viewModel.onOverlayClicked()
             }
             addToPlaylistButton.setOnClickListener {

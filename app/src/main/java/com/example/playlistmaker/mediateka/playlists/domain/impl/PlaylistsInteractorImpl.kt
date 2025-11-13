@@ -49,4 +49,8 @@ class PlaylistsInteractorImpl(private val repository: PlaylistsRepository) :
             toPlaylist(entity)
         }
     }
+
+    override suspend fun deletePlaylist(playlist: Playlist) {
+        repository.deletePlaylist(PlaylistConverter.toPlaylistEntity(playlist))
+    }
 }

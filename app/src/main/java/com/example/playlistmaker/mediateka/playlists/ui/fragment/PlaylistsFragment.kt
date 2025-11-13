@@ -40,7 +40,7 @@ class PlaylistsFragment : Fragment() {
             onItemClicked = { playlist ->
                 findNavController().navigate(
                     R.id.action_global_to_playlistFragment,
-                    bundleOf(PlaylistFragment.ARGS_PLAYLIST_ID to playlist.id)
+                    bundleOf(PlaylistFragment.ARGS_PLAYLIST to playlist)
                 )
             }
         )

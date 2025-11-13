@@ -1,11 +1,14 @@
 package com.example.playlistmaker.mediateka.playlists.ui.fragment
 
 import android.content.Intent
+import android.graphics.Outline
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -56,6 +59,8 @@ class NewPlaylistFragment : Fragment() {
                     requireContext().contentResolver.takePersistableUriPermission(uri, flag)
 
                     binding!!.newPhotoView.setImageURI(uri)
+                    applyRoundedCorners(binding!!.newPhotoView)
+
                     viewModel.onImageLoaded(uri)
                 } else {
                     Log.d("NEW_PLAYLIST_FRAGMENT", "No media selected")
@@ -98,6 +103,17 @@ class NewPlaylistFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    private fun applyRoundedCorners(imageView: ImageView) {
+        val outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                val cornerRadius = resources.getDimension(R.dimen.new_playlist_photo_corner_radius)
+                outline.setRoundRect(0, 0, view.width, view.height, cornerRadius)
+            }
+        }
+        imageView.outlineProvider = outlineProvider
+        imageView.clipToOutline = true
     }
 
     private fun showCreateButtonEnabled(enabled: Boolean) {

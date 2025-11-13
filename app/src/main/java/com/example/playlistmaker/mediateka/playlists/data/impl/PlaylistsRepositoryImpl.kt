@@ -34,4 +34,8 @@ class PlaylistsRepositoryImpl(dataBase: AppDataBase) : PlaylistsRepository {
     override fun getPlaylistById(playlistId: Int): Flow<PlaylistWithTracks> {
         return mediaDao.getPlaylistById(playlistId)
     }
+
+    override suspend fun deletePlaylist(playlist: PlaylistEntity) {
+        mediaDao.deletePlaylist(playlist)
+    }
 }

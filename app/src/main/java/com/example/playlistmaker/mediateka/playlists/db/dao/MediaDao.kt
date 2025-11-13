@@ -77,6 +77,9 @@ WHERE pt.playlistId = :playlistId"""
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlaylist(playlistEntity: PlaylistEntity)
 
+    @Delete(entity = PlaylistEntity::class)
+    suspend fun deletePlaylist(playlist: PlaylistEntity)
+
     @Transaction
     @Query("SELECT * FROM playlist_table")
     fun getAllPlaylists(): Flow<List<PlaylistWithTracks>>

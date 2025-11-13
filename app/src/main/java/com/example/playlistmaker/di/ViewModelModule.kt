@@ -1,6 +1,7 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.mediateka.favorites.ui.viewModel.FavoritesViewModel
+import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
 import com.example.playlistmaker.mediateka.playlists.ui.viewModel.NewPlaylistViewModel
 import com.example.playlistmaker.mediateka.playlists.ui.viewModel.PlaylistsViewModel
 import com.example.playlistmaker.player.ui.viewModel.PlayerViewModel
@@ -57,11 +58,12 @@ val viewModelModule = module {
         )
     }
 
-    viewModel<PlaylistVewModel> { (playlistId: Int) ->
+    viewModel<PlaylistVewModel> { (playlist: Playlist) ->
         PlaylistVewModel(
             playlistsInteractor = get(),
             sharingInteractor = get(),
-            playlistId = playlistId
+            stringResourceProvider = get(),
+            playlist = playlist
         )
     }
 }
