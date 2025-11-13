@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -101,7 +102,25 @@ class PlaylistFragment : Fragment() {
         })
 
         setupRecyclerView()
+        setupViewModelObservers()
+        setupButtonsListeners()
+    }
 
+    private fun setupButtonsListeners() {
+        binding?.playlistToolbar?.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding?.playlistShareButton?.setOnClickListener {
+            viewModel.onSharing()
+        }
+
+        binding?.playlistMenuButton?.setOnClickListener {
+            viewModel.onMenuButtonClicked()
+        }
+    }
+
+    private fun setupViewModelObservers() {
         viewModel.observeBottomSheetState().observe(viewLifecycleOwner) { state ->
             renderBottomSheetState(state)
         }
@@ -113,20 +132,6 @@ class PlaylistFragment : Fragment() {
         }
         viewModel.observeToastMessage().observe(viewLifecycleOwner) { message ->
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-        }
-
-
-        // Listeners
-        binding?.playlistToolbar?.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
-
-        binding?.playlistShareButton?.setOnClickListener {
-            viewModel.onSharing()
-        }
-
-        binding?.playlistMenuButton?.setOnClickListener {
-            viewModel.onMenuButtonClicked()
         }
     }
 
@@ -331,7 +336,7 @@ class PlaylistFragment : Fragment() {
         binding?.playlistPlaceholder?.apply {
             if (show) {
                 root.isVisible = true
-                placeholderText.setTextColor(resources.getColor(R.color.yp_black))
+                placeholderText.setTextColor(getColor(requireContext(), R.color.yp_black))
                 placeholderText.text = getString(R.string.no_tracks_added_to_playlist)
             } else {
                 root.isGone = false
