@@ -22,7 +22,7 @@ import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
 import com.example.playlistmaker.mediateka.playlists.ui.fragment.NewPlaylistFragment
 import com.example.playlistmaker.player.ui.fragment.PlayerFragment
 import com.example.playlistmaker.playlist.ui.entity.PlaylistScreenState
-import com.example.playlistmaker.playlist.ui.viewModel.PlaylistVewModel
+import com.example.playlistmaker.playlist.ui.viewModel.PlaylistViewModel
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.ui.fragment.TrackAdapter
 import com.example.playlistmaker.util.Util.Companion.dpToPx
@@ -38,7 +38,7 @@ import org.koin.core.parameter.parametersOf
 class PlaylistFragment : Fragment() {
 
     private var binding: FragmentPlaylistBinding? = null
-    private lateinit var viewModel: PlaylistVewModel
+    private lateinit var viewModel: PlaylistViewModel
     private lateinit var adapter: TrackAdapter
     private lateinit var bottomSheetBehaviorContent: BottomSheetBehavior<LinearLayout>
     private lateinit var bottomSheetBehaviorMenu: BottomSheetBehavior<LinearLayout>
@@ -145,17 +145,21 @@ class PlaylistFragment : Fragment() {
             PlaylistScreenState.Empty -> {
                 hideContentBottomSheet()
                 hideMenuBottomSheet()
+                showPlaceholder(true)
             }
 
             PlaylistScreenState.ContentBottomSheet -> {
+                showPlaceholder(false)
                 showContentBottomSheet()
             }
 
             PlaylistScreenState.MenuBottomSheet -> {
+                showPlaceholder(false)
                 showMenuBottomSheet()
             }
 
             PlaylistScreenState.Sharing -> {
+                showPlaceholder(false)
                 hideMenuBottomSheet()
                 hideContentBottomSheet()
             }
@@ -321,6 +325,19 @@ class PlaylistFragment : Fragment() {
         bottomSheetBehaviorContent.peekHeight = peekHeight
         bottomSheetBehaviorContent.halfExpandedRatio = peekHeight.toFloat() / totalScreenHeight
         bottomSheetBehaviorContent.expandedOffset = toolbarHeight
+    }
+
+    private fun showPlaceholder(show: Boolean) {
+        binding?.playlistPlaceholder?.apply {
+            if (show) {
+                root.isVisible = true
+                placeholderText.setTextColor(resources.getColor(R.color.yp_black))
+                placeholderText.text = getString(R.string.no_tracks_added_to_playlist)
+            } else {
+                root.isGone = false
+            }
+        }
+
     }
 
     companion object {

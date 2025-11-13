@@ -13,7 +13,7 @@ import com.example.playlistmaker.sharing.domain.api.StringResourceProvider
 import com.example.playlistmaker.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class PlaylistVewModel(
+class PlaylistViewModel(
     val playlistsInteractor: PlaylistsInteractor,
     val sharingInteractor: SharingInteractor,
     val stringResourceProvider: StringResourceProvider,
