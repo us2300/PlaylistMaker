@@ -19,6 +19,13 @@ object PlaylistConverter {
         )
     }
 
+    fun convertToDomainList(entities: List<PlaylistWithTracks>): List<Playlist> {
+        return entities.filter { it.playlist != null }
+            .map { playlistWithTracks ->
+                toPlaylist(playlistWithTracks)
+            }
+    }
+
     fun toPlaylist(playlistWithTracks: PlaylistWithTracks): Playlist {
         return Playlist(
             id = playlistWithTracks.playlist.id,
