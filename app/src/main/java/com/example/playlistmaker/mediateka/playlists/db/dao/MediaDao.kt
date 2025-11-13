@@ -80,6 +80,9 @@ WHERE pt.playlistId = :playlistId"""
     @Delete(entity = PlaylistEntity::class)
     suspend fun deletePlaylist(playlist: PlaylistEntity)
 
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun updatePlaylist(playlist: PlaylistEntity)
+
     @Transaction
     @Query("SELECT * FROM playlist_table")
     fun getAllPlaylists(): Flow<List<PlaylistWithTracks>>

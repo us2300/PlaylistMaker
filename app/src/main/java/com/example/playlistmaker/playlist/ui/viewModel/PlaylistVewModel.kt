@@ -17,16 +17,16 @@ class PlaylistVewModel(
     val playlistsInteractor: PlaylistsInteractor,
     val sharingInteractor: SharingInteractor,
     val stringResourceProvider: StringResourceProvider,
-    val playlist: Playlist
+    val initialPlaylist: Playlist
 ) : ViewModel() {
 
-    private val playlistId = playlist.id
+    private val playlistId = initialPlaylist.id
 
     private val _playlistScreenState =
         MutableLiveData<PlaylistScreenState>(PlaylistScreenState.Empty)
 
     private val _tracks = MutableLiveData<List<Track>>()
-    private val _playlist = MutableLiveData<Playlist>(playlist)
+    private val _playlist = MutableLiveData<Playlist>(initialPlaylist)
     private val _shouldCloseScreen = SingleLiveEvent<Unit>()
     private val _toastMessage = SingleLiveEvent<String>()
 
@@ -74,7 +74,7 @@ class PlaylistVewModel(
         }
     }
 
-    private fun refreshPlaylist() {
+    fun refreshPlaylist() {
         viewModelScope.launch {
             playlistsInteractor.getPlaylistById(playlistId).collect {
                 _playlist.postValue(it)

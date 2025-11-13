@@ -19,6 +19,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistBinding
 import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
+import com.example.playlistmaker.mediateka.playlists.ui.fragment.NewPlaylistFragment
 import com.example.playlistmaker.player.ui.fragment.PlayerFragment
 import com.example.playlistmaker.playlist.ui.entity.PlaylistScreenState
 import com.example.playlistmaker.playlist.ui.viewModel.PlaylistVewModel
@@ -114,6 +115,7 @@ class PlaylistFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
 
+
         // Listeners
         binding?.playlistToolbar?.setNavigationOnClickListener {
             findNavController().navigateUp()
@@ -126,6 +128,16 @@ class PlaylistFragment : Fragment() {
         binding?.playlistMenuButton?.setOnClickListener {
             viewModel.onMenuButtonClicked()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshPlaylist()
     }
 
     private fun renderBottomSheetState(state: PlaylistScreenState) {
@@ -207,7 +219,10 @@ class PlaylistFragment : Fragment() {
             }
 
             playlistBottomSheetRedactButton.setOnClickListener {
-                TODO()
+                findNavController().navigate(
+                    R.id.action_global_to_newPlaylistFragment,
+                    bundleOf(NewPlaylistFragment.ARGS_PLAYLIST to playlist)
+                )
             }
 
             playlistBottomSheetDeletePlaylistButton.setOnClickListener {
@@ -226,7 +241,7 @@ class PlaylistFragment : Fragment() {
         binding?.apply {
             playlistTitle.text = playlist.title
 
-            if (playlist.description == null) {
+            if (playlist.description.isNullOrEmpty()) {
                 playlistDescription.isGone = true
             } else {
                 playlistDescription.isVisible = true
@@ -306,11 +321,6 @@ class PlaylistFragment : Fragment() {
         bottomSheetBehaviorContent.peekHeight = peekHeight
         bottomSheetBehaviorContent.halfExpandedRatio = peekHeight.toFloat() / totalScreenHeight
         bottomSheetBehaviorContent.expandedOffset = toolbarHeight
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 
     companion object {

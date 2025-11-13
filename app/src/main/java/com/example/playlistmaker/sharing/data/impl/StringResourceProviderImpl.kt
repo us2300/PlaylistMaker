@@ -40,4 +40,8 @@ class StringResourceProviderImpl(private val context: Context) : StringResourceP
     override fun getNoTracksInPlaylistToShareMsg(): String {
         return context.getString(R.string.no_tracks_in_playlist_to_share)
     }
+
+    override fun getNoChangesInPlaylistMadeMsg(): String {
+        return context.getString(R.string.no_changes_made_in_playlist)
+    }
 }

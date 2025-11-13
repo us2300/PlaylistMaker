@@ -50,11 +50,12 @@ val viewModelModule = module {
         )
     }
 
-    viewModel<NewPlaylistViewModel> {
+    viewModel<NewPlaylistViewModel> { (existingPlaylist: Playlist?) ->
         NewPlaylistViewModel(
             playlistsInteractor = get(),
             storageInteractor = get(),
-            stringResProvider = get()
+            stringResProvider = get(),
+            existingPlaylist = existingPlaylist
         )
     }
 
@@ -63,7 +64,7 @@ val viewModelModule = module {
             playlistsInteractor = get(),
             sharingInteractor = get(),
             stringResourceProvider = get(),
-            playlist = playlist
+            initialPlaylist = playlist
         )
     }
 }

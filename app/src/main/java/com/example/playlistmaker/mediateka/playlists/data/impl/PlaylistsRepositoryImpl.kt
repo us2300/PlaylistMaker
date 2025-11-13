@@ -38,4 +38,8 @@ class PlaylistsRepositoryImpl(dataBase: AppDataBase) : PlaylistsRepository {
     override suspend fun deletePlaylist(playlist: PlaylistEntity) {
         mediaDao.deletePlaylist(playlist)
     }
+
+    override suspend fun updatePlaylist(playlist: PlaylistEntity) {
+        mediaDao.updatePlaylist(playlist)
+    }
 }
