@@ -4,6 +4,8 @@ import androidx.core.net.toUri
 import com.example.playlistmaker.mediateka.playlists.db.entity.PlaylistEntity
 import com.example.playlistmaker.mediateka.playlists.db.entity.PlaylistWithTracks
 import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
+import com.example.playlistmaker.playlist.data.dto.PlaylistDto
+import com.example.playlistmaker.search.domain.converters.TrackConverter
 import com.example.playlistmaker.search.domain.converters.TrackConverter.convertFromDbEntityList
 
 object PlaylistConverter {
@@ -17,6 +19,13 @@ object PlaylistConverter {
         )
     }
 
+    fun convertToDomainList(entities: List<PlaylistWithTracks>): List<Playlist> {
+        return entities.filter { it.playlist != null }
+            .map { playlistWithTracks ->
+                toPlaylist(playlistWithTracks)
+            }
+    }
+
     fun toPlaylist(playlistWithTracks: PlaylistWithTracks): Playlist {
         return Playlist(
             id = playlistWithTracks.playlist.id,
@@ -24,6 +33,20 @@ object PlaylistConverter {
             title = playlistWithTracks.playlist.title,
             description = playlistWithTracks.playlist.description,
             coverUri = playlistWithTracks.playlist.coverUri?.toUri()
+        )
+    }
+
+    fun toPlaylistDto(playlist: Playlist): PlaylistDto {
+        val tracksDto = playlist.tracks?.map { track ->
+            TrackConverter.convertToDto(track)
+        } ?: emptyList()
+
+        return PlaylistDto(
+            id = playlist.id,
+            tracks = tracksDto,
+            title = playlist.title,
+            description = playlist.description,
+            coverUri = playlist.coverUri
         )
     }
 }

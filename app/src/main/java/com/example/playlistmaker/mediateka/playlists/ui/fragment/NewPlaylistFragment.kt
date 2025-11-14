@@ -1,11 +1,14 @@
 package com.example.playlistmaker.mediateka.playlists.ui.fragment
 
 import android.content.Intent
+import android.graphics.Outline
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,28 +17,37 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
+import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
 import com.example.playlistmaker.mediateka.playlists.ui.viewModel.NewPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.getKoin
+import org.koin.core.parameter.parametersOf
 
 class NewPlaylistFragment : Fragment() {
 
     private var binding: FragmentNewPlaylistBinding? = null
-    private val viewModel: NewPlaylistViewModel by viewModel()
-
+    private lateinit var viewModel: NewPlaylistViewModel
     private lateinit var confirmExitDialog: MaterialAlertDialogBuilder
+
+    @Suppress("DEPRECATION")
+    private val existingPlaylist: Playlist? by lazy {
+        arguments?.getParcelable(ARGS_PLAYLIST)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel = getKoin().get { parametersOf(existingPlaylist) }
         binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        fillPlaylistInfo()
 
         viewModel.observeToastMessage().observe(viewLifecycleOwner) { message ->
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -56,6 +68,8 @@ class NewPlaylistFragment : Fragment() {
                     requireContext().contentResolver.takePersistableUriPermission(uri, flag)
 
                     binding!!.newPhotoView.setImageURI(uri)
+                    applyRoundedCorners(binding!!.newPhotoView)
+
                     viewModel.onImageLoaded(uri)
                 } else {
                     Log.d("NEW_PLAYLIST_FRAGMENT", "No media selected")
@@ -89,10 +103,44 @@ class NewPlaylistFragment : Fragment() {
             }
 
             createButton.setOnClickListener {
-                viewModel.onCreatePlaylist()
+                if (existingPlaylist == null) {
+                    viewModel.onCreatePlaylist()
+                } else {
+                    viewModel.onUpdatePlaylist()
+                }
             }
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
+    private fun fillPlaylistInfo() {
+        if (existingPlaylist != null) {
+            binding?.apply {
+                binding!!.newPhotoView.setImageURI(existingPlaylist!!.coverUri)
+                applyRoundedCorners(binding!!.newPhotoView)
+
+                newPlaylistTitleEdittext.setText(existingPlaylist!!.title)
+                newPlaylistDescriptionEdittext.setText(existingPlaylist!!.description)
+
+                createButton.setText(R.string.save)
+            }
+        }
+    }
+
+    private fun applyRoundedCorners(imageView: ImageView) {
+        val outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                val cornerRadius = resources.getDimension(R.dimen.new_playlist_photo_corner_radius)
+                outline.setRoundRect(0, 0, view.width, view.height, cornerRadius)
+            }
+        }
+        imageView.outlineProvider = outlineProvider
+        imageView.clipToOutline = true
     }
 
     private fun showCreateButtonEnabled(enabled: Boolean) {
@@ -105,5 +153,9 @@ class NewPlaylistFragment : Fragment() {
         } else {
             findNavController().navigateUp()
         }
+    }
+
+    companion object {
+        const val ARGS_PLAYLIST = "playlist"
     }
 }
