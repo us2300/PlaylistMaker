@@ -10,6 +10,4 @@ const val TRACK_PROGRESS_TIME_DEFAULT = "00:00"
 
 const val PLAYER_NOTIFICATION_CHANNEL_ID = "player_service_channel"
 
-const val PREVIEW_URL_TAG = "preview_url"
-const val TRACK_NAME_TAG = "track_name"
-const val ARTIST_NAME_TAG = "artist_name"
+const val ARGS_TRACK = "track"

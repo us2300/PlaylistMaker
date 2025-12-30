@@ -16,11 +16,10 @@ import androidx.core.app.ServiceCompat
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.api.AudioPlayerControl
 import com.example.playlistmaker.player.domain.entity.PlayerState
-import com.example.playlistmaker.util.ARTIST_NAME_TAG
+import com.example.playlistmaker.search.domain.entity.Track
+import com.example.playlistmaker.util.ARGS_TRACK
 import com.example.playlistmaker.util.PLAYER_NOTIFICATION_CHANNEL_ID
-import com.example.playlistmaker.util.PREVIEW_URL_TAG
 import com.example.playlistmaker.util.TIME_REFRESH_DELAY
-import com.example.playlistmaker.util.TRACK_NAME_TAG
 import com.example.playlistmaker.util.Util.Companion.millisToMmSs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,13 +28,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PlayerService : Service(), AudioPlayerControl {
 
+    private var track: Track? = null
     private var previewUrl = ""
-    private var trackName = ""
-    private var artistName = ""
 
     private val binder = PlayerServiceBinder()
 
@@ -57,9 +56,9 @@ class PlayerService : Service(), AudioPlayerControl {
     }
 
     override fun onBind(intent: Intent?): IBinder {
-        previewUrl = intent?.getStringExtra(PREVIEW_URL_TAG) ?: ""
-        trackName = intent?.getStringExtra(TRACK_NAME_TAG) ?: ""
-        artistName = intent?.getStringExtra(ARTIST_NAME_TAG) ?: ""
+        @Suppress("DEPRECATION")
+        track = intent?.getParcelableExtra(ARGS_TRACK)
+        previewUrl = track?.previewUrl ?: ""
         preparePlayer()
         return binder
     }
@@ -72,7 +71,7 @@ class PlayerService : Service(), AudioPlayerControl {
 
     override fun startPlayer() {
         player?.start()
-        _playerState.value = PlayerState.Playing(getCurrentPosition())
+        _playerState.update { PlayerState.Playing(getCurrentPosition()) }
         startTimer()
     }
 
@@ -83,7 +82,7 @@ class PlayerService : Service(), AudioPlayerControl {
                     player.pause()
                     stopForegroundNotification()
                     stopTimer()
-                    _playerState.value = PlayerState.Paused(getCurrentPosition())
+                    _playerState.update { PlayerState.Paused(getCurrentPosition()) }
                 }
             } catch (e: IllegalStateException) {
                 Log.e("AudioPlayer", "Cannot pause in current state", e)
@@ -128,10 +127,10 @@ class PlayerService : Service(), AudioPlayerControl {
     private fun createNotificationChannel() {
         val channel = NotificationChannel(
             PLAYER_NOTIFICATION_CHANNEL_ID,
-            "Player service 12312",
+            getString(R.string.audio_player_service),
             NotificationManager.IMPORTANCE_DEFAULT
         )
-        channel.description = "description 1231"
+        channel.description = getString(R.string.audio_player_service_is_running)
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
@@ -140,7 +139,7 @@ class PlayerService : Service(), AudioPlayerControl {
     private fun createServiceNotification(): Notification {
         return NotificationCompat.Builder(this, PLAYER_NOTIFICATION_CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
-            .setContentText("$artistName - $trackName")
+            .setContentText("${track?.artistName} - ${track?.trackName}")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .build()
@@ -151,15 +150,15 @@ class PlayerService : Service(), AudioPlayerControl {
             return
         }
         try {
-            player?.setDataSource(previewUrl)
+            player?.setDataSource(track?.previewUrl)
             player?.prepareAsync()
             player?.setOnPreparedListener {
-                _playerState.value = PlayerState.Prepared
+                _playerState.update { PlayerState.Prepared }
             }
             player?.setOnCompletionListener {
                 stopTimer()
                 stopForegroundNotification()
-                _playerState.value = PlayerState.Prepared
+                _playerState.update { PlayerState.Prepared }
             }
         } catch (e: Exception) {
             throw e
@@ -173,7 +172,7 @@ class PlayerService : Service(), AudioPlayerControl {
         player?.setOnCompletionListener(null)
         player?.release()
         player = null
-        _playerState.value = PlayerState.Default
+        _playerState.update { PlayerState.Default }
     }
 
     private fun startTimer() {
@@ -182,7 +181,7 @@ class PlayerService : Service(), AudioPlayerControl {
 
             while (player?.isPlaying == true) {
                 delay(TIME_REFRESH_DELAY)
-                _playerState.value = PlayerState.Playing(getCurrentPosition())
+                _playerState.update { PlayerState.Playing(getCurrentPosition()) }
             }
         }
     }

@@ -28,9 +28,7 @@ import com.example.playlistmaker.player.services.PlayerService
 import com.example.playlistmaker.player.ui.entity.PlayerScreenState
 import com.example.playlistmaker.player.ui.viewModel.PlayerViewModel
 import com.example.playlistmaker.search.domain.entity.Track
-import com.example.playlistmaker.util.ARTIST_NAME_TAG
-import com.example.playlistmaker.util.PREVIEW_URL_TAG
-import com.example.playlistmaker.util.TRACK_NAME_TAG
+import com.example.playlistmaker.util.ARGS_TRACK
 import com.example.playlistmaker.util.Util.Companion.dpToPx
 import com.example.playlistmaker.util.Util.Companion.getCoverArtwork512
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -281,13 +279,7 @@ class PlayerFragment : Fragment() {
 
     private fun getPlayerServiceIntent(): Intent {
         return Intent(requireContext(), PlayerService::class.java).apply {
-            putExtra(PREVIEW_URL_TAG, track.previewUrl)
-            putExtra(TRACK_NAME_TAG, track.trackName)
-            putExtra(ARTIST_NAME_TAG, track.artistName)
+            putExtra(ARGS_TRACK, track)
         }
-    }
-
-    companion object {
-        const val ARGS_TRACK = "track"
     }
 }
