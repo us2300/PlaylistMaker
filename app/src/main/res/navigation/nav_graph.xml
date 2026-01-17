@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mediatekaFragment">
+    app:startDestination="@id/mediatekaComposeFragment">
 
     <action
         android:id="@+id/action_global_to_playerFragment"
@@ -34,10 +34,10 @@
         tools:layout="@layout/fragment_player" />
 
     <fragment
-        android:id="@+id/mediatekaFragment"
-        android:name="com.example.playlistmaker.mediateka.ui.fragment.MediatekaFragment"
-        android:label="fragment_mediateka"
-        tools:layout="@layout/fragment_mediateka" />
+        android:id="@+id/mediatekaComposeFragment"
+        android:name="com.example.playlistmaker.mediateka.ui.fragment.MediatekaComposeFragment"
+        android:label="fragment_mediateka_compose"
+        tools:layout="@layout/fragment_mediateka_compose" />
 
     <fragment
         android:id="@+id/settingsComposeFragment"

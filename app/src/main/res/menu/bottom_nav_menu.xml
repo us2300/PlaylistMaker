@@ -7,7 +7,7 @@
         android:title="@string/search" />
 
     <item
-        android:id="@+id/mediatekaFragment"
+        android:id="@+id/mediatekaComposeFragment"
         android:icon="@drawable/icon_mediateka"
         android:title="@string/mediateka" />
 

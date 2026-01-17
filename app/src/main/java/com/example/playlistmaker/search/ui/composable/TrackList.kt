@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -77,7 +78,8 @@ fun TrackItem(
     item: Track,
     onClick: (track: Track) -> Unit
 ) {
-    val debouncer = Debouncer()
+    val debouncer = remember { Debouncer() }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -101,7 +103,7 @@ fun TrackItem(
                 .build(),
             contentDescription = null,
             modifier = Modifier
-                .clip(RoundedCornerShape(2.dp))
+                .clip(RoundedCornerShape(dimensionResource(R.dimen.list_item_image_radius)))
                 .padding(end = dimensionResource(R.dimen.search_result_album_cover_padding)),
             contentScale = ContentScale.Crop,
             placeholder = painterResource(R.drawable.album_placeholder)

@@ -73,7 +73,7 @@
     <dimen name="new_playlist_description_text_margin_top">16dp</dimen>
     <dimen name="new_playlist_name_text_margin_top">32dp</dimen>
     <dimen name="new_playlist_text_outline_radius">4dp</dimen>
-    <dimen name="playlist_grid_item_padding_horizontal">4dp</dimen>
+    <dimen name="grid_item_image_padding">4dp</dimen>
     <dimen name="playlist_grid_item_padding_vertical">8dp</dimen>
     <dimen name="mediateka_content_margin_horizontal">12dp</dimen>
     <dimen name="mediateka_content_margin_top">8dp</dimen>
@@ -99,7 +99,7 @@
     <dimen name="playlist_recycler_view_margin_top">12dp</dimen>
     <dimen name="playlist_bottom_sheet_margin_top">24dp</dimen>
     <dimen name="playlist_menu_items_margin_top">8dp</dimen>
-    <dimen name="search_placeholder_padding_top">102dp</dimen>
+    <dimen name="search_placeholder_padding_top">46dp</dimen>
     <dimen name="search_icon_padding_vertical">10dp</dimen>
     <dimen name="search_bar_padding_horizontal">16dp</dimen>
     <dimen name="track_item_padding_vertical">8dp</dimen>
@@ -110,4 +110,11 @@
     <dimen name="settings_menu_item_padding_end">18dp</dimen>
     <dimen name="settings_menu_item_padding_vertical">21dp</dimen>
     <dimen name="settings_header_bottom_spacer">24dp</dimen>
+    <dimen name="favorites_content_top_spacer">20dp</dimen>
+    <dimen name="playlists_button_top_spacer">24dp</dimen>
+    <dimen name="playlists_page_padding_horizontal">12dp</dimen>
+    <dimen name="playlists_button_bottom_spacer">12dp</dimen>
+    <dimen name="grid_item_image_radius">8dp</dimen>
+    <dimen name="list_item_image_radius">2dp</dimen>
+    <dimen name="grid_item_padding_bottom">16dp</dimen>
 </resources>

@@ -7,29 +7,36 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.playlistmaker.R
 import com.example.playlistmaker.app.ui.theme.LocalTypography
-import com.example.playlistmaker.search.ui.entity.SearchState
-import com.example.playlistmaker.search.ui.entity.SearchState.PlaceHolder.NetworkError
 
 @Composable
-fun SearchPlaceholder(state: SearchState.PlaceHolder, onReloadButtonClicked: () -> Unit) {
+fun Placeholder(
+    textId: Int,
+    imageId: Int,
+    isNetworkError: Boolean = false,
+    isPlaylists: Boolean = false,
+    onReloadButtonClicked: () -> Unit = {}
+) {
+    val extraPadding = remember { if (isPlaylists) 0.dp else 80.dp }
 
     Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Image(
-            modifier = Modifier.padding(top = dimensionResource(R.dimen.search_placeholder_padding_top)),
-            painter = painterResource(id = state.imageId),
+            modifier = Modifier.padding(top = dimensionResource(R.dimen.search_placeholder_padding_top) + extraPadding),
+            painter = painterResource(id = imageId),
             contentDescription = null
         )
 
@@ -40,13 +47,13 @@ fun SearchPlaceholder(state: SearchState.PlaceHolder, onReloadButtonClicked: () 
                     bottom = dimensionResource(R.dimen.search_placeholder_text_padding_bottom)
                 )
                 .padding(horizontal = dimensionResource(R.dimen.search_placeholder_text_padding_horizontal)),
-            text = stringResource(state.textId),
+            text = stringResource(textId),
             style = LocalTypography.current.placeHolderText,
             color = MaterialTheme.colorScheme.onPrimary,
             textAlign = TextAlign.Center
         )
 
-        if (state is NetworkError) {
+        if (isNetworkError) {
             val buttonText = stringResource(R.string.reload)
             CustomButton(
                 text = buttonText,
@@ -54,28 +61,4 @@ fun SearchPlaceholder(state: SearchState.PlaceHolder, onReloadButtonClicked: () 
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun SearchPlaceholderErrorPreview() {
-    SearchPlaceholder(
-        NetworkError(
-            R.drawable.img_connection_issues,
-            R.string.connection_issues_check_connection,
-        ),
-        onReloadButtonClicked = { }
-    )
-}
-
-@Preview
-@Composable
-fun SearchPlaceholderNothingFoundPreview() {
-    SearchPlaceholder(
-        SearchState.PlaceHolder.NothingFound(
-            R.drawable.img_nothing_found,
-            R.string.nothing_found
-        ),
-        onReloadButtonClicked = {}
-    )
 }

@@ -1,8 +1,8 @@
 package com.example.playlistmaker.app.ui.theme
 
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
+import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.unit.sp
 
 
@@ -11,7 +11,7 @@ val Typography = CustomTypography(
     title = TextStyle(
         fontFamily = ysDisplayFontFamily,
         fontSize = 22.sp,
-        fontWeight = FontWeight.W500
+        fontWeight = W500
     ),
     searchText = TextStyle(
         fontFamily = ysDisplayFontFamily,
@@ -31,12 +31,12 @@ val Typography = CustomTypography(
     placeHolderText = TextStyle(
         fontFamily = ysDisplayFontFamily,
         fontSize = 19.sp,
-        fontWeight = FontWeight.W500
+        fontWeight = W500
     ),
     buttonText = TextStyle(
         fontFamily = ysDisplayFontFamily,
         fontSize = 14.sp,
-        fontWeight = FontWeight.W500
+        fontWeight = W500
     ),
     // endregion
     // Экран настроек
@@ -44,6 +44,16 @@ val Typography = CustomTypography(
         fontFamily = ysDisplayFontFamily,
         fontSize = 16.sp,
         fontWeight = W400
+    ),
+    gridItemText = TextStyle(
+        fontFamily = ysDisplayFontFamily,
+        fontSize = 12.sp,
+        fontWeight = W400
+    ),
+    mediatekaTabText = TextStyle(
+        fontFamily = ysDisplayFontFamily,
+        fontSize = 14.sp,
+        fontWeight = W500
     )
 )
 
@@ -56,5 +66,8 @@ data class CustomTypography(
     val placeHolderText: TextStyle,
     val buttonText: TextStyle,
     // Экран настроек
-    val settingsMenuItemText: TextStyle
+    val settingsMenuItemText: TextStyle,
+    // Экраны медиатеки
+    val gridItemText: TextStyle,
+    val mediatekaTabText: TextStyle
 )
