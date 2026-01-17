@@ -28,6 +28,16 @@
     </fragment>
 
     <fragment
+        android:id="@+id/searchComposeFragment"
+        android:name="com.example.playlistmaker.search.ui.fragment.SearchComposeFragment"
+        android:label="fragment_search_compose"
+        tools:layout="@layout/fragment_search_compose">
+        <action
+            android:id="@+id/action_searchComposeFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/playerFragment"
         android:name="com.example.playlistmaker.player.ui.fragment.PlayerFragment"
         android:label="fragment_player"

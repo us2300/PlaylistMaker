@@ -27,7 +27,7 @@ class SearchViewModel(
 
     private val savedSearchResults = mutableListOf<Track>()
 
-    private var searchStateLiveData = MutableLiveData<SearchState>(SearchState.Empty)
+    private val searchStateLiveData = MutableLiveData<SearchState>(SearchState.Empty)
     fun observeSearchState(): LiveData<SearchState> = searchStateLiveData
 
     fun onEditTextFocusChange(hasFocus: Boolean) {

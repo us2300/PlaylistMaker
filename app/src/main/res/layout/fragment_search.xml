@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/horizontal_margin"
-        android:layout_marginBottom="@dimen/search_bar_margin_bottom">
+        android:layout_marginBottom="@dimen/search_bar_padding_vertical">
 
         <EditText
             android:id="@+id/edit_text_search"
@@ -54,8 +54,8 @@
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/progress_bar_margin_top"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/progress_bar_padding_top"
             android:indeterminateTint="@color/blue"
             android:visibility="gone" />
 
