@@ -106,4 +106,8 @@
     <dimen name="search_bar_bottom_spacer">16dp</dimen>
     <dimen name="you_searched_top_spacer">26dp</dimen>
     <dimen name="you_searched_bottom_spacer">20dp</dimen>
+    <dimen name="settings_menu_item_padding_start">16dp</dimen>
+    <dimen name="settings_menu_item_padding_end">18dp</dimen>
+    <dimen name="settings_menu_item_padding_vertical">21dp</dimen>
+    <dimen name="settings_header_bottom_spacer">24dp</dimen>
 </resources>

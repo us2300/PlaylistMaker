@@ -38,7 +38,7 @@ fun SearchScreen(
     val onItemClick = { track: Track ->
         viewModel?.onItemClicked(track)
         navController?.navigate(
-            R.id.action_global_to_playerFragment,
+            R.id.action_searchComposeFragment_to_playerFragment,
             bundleOf(ARGS_TRACK to track)
         )
     }

@@ -2,10 +2,12 @@ package com.example.playlistmaker.app.ui.theme
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.unit.sp
 
 
 val Typography = CustomTypography(
+    // region Экран поиска
     title = TextStyle(
         fontFamily = ysDisplayFontFamily,
         fontSize = 22.sp,
@@ -14,17 +16,17 @@ val Typography = CustomTypography(
     searchText = TextStyle(
         fontFamily = ysDisplayFontFamily,
         fontSize = 16.sp,
-        fontWeight = FontWeight.W400
+        fontWeight = W400
     ),
     trackListUpperText = TextStyle(
         fontFamily = ysDisplayFontFamily,
         fontSize = 16.sp,
-        fontWeight = FontWeight.W400
+        fontWeight = W400
     ),
     trackListLowerText = TextStyle(
         fontFamily = ysDisplayFontFamily,
         fontSize = 11.sp,
-        fontWeight = FontWeight.W400
+        fontWeight = W400
     ),
     placeHolderText = TextStyle(
         fontFamily = ysDisplayFontFamily,
@@ -35,6 +37,13 @@ val Typography = CustomTypography(
         fontFamily = ysDisplayFontFamily,
         fontSize = 14.sp,
         fontWeight = FontWeight.W500
+    ),
+    // endregion
+    // Экран настроек
+    settingsMenuItemText = TextStyle(
+        fontFamily = ysDisplayFontFamily,
+        fontSize = 16.sp,
+        fontWeight = W400
     )
 )
 
@@ -45,5 +54,7 @@ data class CustomTypography(
     val trackListUpperText: TextStyle,
     val trackListLowerText: TextStyle,
     val placeHolderText: TextStyle,
-    val buttonText: TextStyle
+    val buttonText: TextStyle,
+    // Экран настроек
+    val settingsMenuItemText: TextStyle
 )
