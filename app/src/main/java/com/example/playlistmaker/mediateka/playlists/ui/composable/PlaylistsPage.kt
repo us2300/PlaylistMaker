@@ -12,30 +12,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
-import androidx.core.os.bundleOf
-import androidx.navigation.NavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.mediateka.playlists.domain.entity.Playlist
 import com.example.playlistmaker.mediateka.playlists.ui.entity.PlaylistsState.Content
 import com.example.playlistmaker.mediateka.playlists.ui.entity.PlaylistsState.Placeholder
 import com.example.playlistmaker.mediateka.playlists.ui.viewModel.PlaylistsViewModel
-import com.example.playlistmaker.playlist.ui.fragment.PlaylistFragment
 import com.example.playlistmaker.search.ui.composable.CustomButton
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun PlaylistsPage(bottomNavHeight: Dp, navController: NavController) {
+fun PlaylistsPage(
+    bottomNavHeight: Dp,
+    onButtonClicked: () -> Unit,
+    onItemClicked: (item: Playlist) -> Unit
+) {
 
     val viewModel: PlaylistsViewModel = koinViewModel()
     val state = viewModel.observeState().observeAsState().value
-
-    val onItemClicked = { playlist: Playlist ->
-        navController.navigate(
-            R.id.action_global_to_playlistFragment, bundleOf(
-                PlaylistFragment.ARGS_PLAYLIST to playlist
-            )
-        )
-    }
 
     Column(
         Modifier
@@ -49,7 +42,7 @@ fun PlaylistsPage(bottomNavHeight: Dp, navController: NavController) {
 
         CustomButton(
             text = stringResource(R.string.new_playlist),
-            onClick = { navController.navigate(R.id.action_global_to_newPlaylistFragment) }
+            onClick = { onButtonClicked() }
         )
 
         Spacer(Modifier.height(dimensionResource(R.dimen.playlists_button_bottom_spacer)))

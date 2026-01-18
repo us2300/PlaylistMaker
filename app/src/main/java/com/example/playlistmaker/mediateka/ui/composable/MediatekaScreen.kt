@@ -26,6 +26,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.app.ui.theme.LocalTypography
 import com.example.playlistmaker.mediateka.favorites.ui.composable.FavoritesPage
 import com.example.playlistmaker.mediateka.playlists.ui.composable.PlaylistsPage
+import com.example.playlistmaker.playlist.ui.fragment.PlaylistFragment
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.ui.composable.CustomTopAppBar
 import com.example.playlistmaker.util.ARGS_TRACK
@@ -113,6 +114,7 @@ fun MediatekaScreen(navController: NavController, bottomNavHeight: Dp) {
                 when (page) {
                     0 -> {
                         FavoritesPage(
+                            bottomNavHeight = bottomNavHeight,
                             onTrackClicked = { track: Track ->
                                 navController.navigate(
                                     R.id.action_global_to_playerFragment,
@@ -123,7 +125,17 @@ fun MediatekaScreen(navController: NavController, bottomNavHeight: Dp) {
                     }
 
                     1 -> {
-                        PlaylistsPage(bottomNavHeight, navController)
+                        PlaylistsPage(
+                            bottomNavHeight = bottomNavHeight,
+                            onButtonClicked = { navController.navigate(R.id.action_global_to_newPlaylistFragment) },
+                            onItemClicked = {
+                                navController.navigate(
+                                    R.id.action_global_to_playlistFragment, bundleOf(
+                                        PlaylistFragment.ARGS_PLAYLIST to it
+                                    )
+                                )
+                            }
+                        )
                     }
                 }
             }

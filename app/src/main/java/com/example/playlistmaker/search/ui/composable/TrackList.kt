@@ -42,32 +42,45 @@ import com.example.playlistmaker.util.Debouncer
 fun TrackList(
     items: List<Track>,
     onItemCLicked: (item: Track) -> Unit,
-    isHistory: Boolean = false
+    isHistory: Boolean = false,
+    onClearHistoryClicked: () -> Unit = {}
 ) {
-    if (isHistory) {
-        Spacer(Modifier.height(dimensionResource(R.dimen.you_searched_top_spacer)))
+    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = dimensionResource(R.dimen.track_history_header_padding_horizontal))
-                .padding(
-                    top = dimensionResource(R.dimen.track_history_header_padding_top),
-                    bottom = dimensionResource(R.dimen.track_history_header_padding_bottom)
-                ),
-            textAlign = TextAlign.Center,
-            text = stringResource(R.string.you_searched),
-            style = LocalTypography.current.placeHolderText
-        )
+        if (isHistory) {
+            Spacer(Modifier.height(dimensionResource(R.dimen.you_searched_top_spacer)))
 
-        Spacer(Modifier.height(dimensionResource(R.dimen.you_searched_bottom_spacer)))
-    }
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = dimensionResource(R.dimen.track_history_header_padding_horizontal))
+                    .padding(
+                        top = dimensionResource(R.dimen.track_history_header_padding_top),
+                        bottom = dimensionResource(R.dimen.track_history_header_padding_bottom)
+                    ),
+                textAlign = TextAlign.Center,
+                text = stringResource(R.string.you_searched),
+                style = LocalTypography.current.placeHolderText
+            )
 
-    LazyColumn {
-        items(items) { item ->
-            TrackItem(
-                item = item,
-                onClick = { onItemCLicked(item) }
+            Spacer(Modifier.height(dimensionResource(R.dimen.you_searched_bottom_spacer)))
+        }
+
+        LazyColumn {
+            items(items) { item ->
+                TrackItem(
+                    item = item,
+                    onClick = { onItemCLicked(item) }
+                )
+            }
+        }
+
+        if (isHistory) {
+            Spacer(Modifier.height(dimensionResource(R.dimen.clear_history_button_top_spacer)))
+
+            CustomButton(
+                text = stringResource(R.string.clear_history),
+                onClick = { onClearHistoryClicked() }
             )
         }
     }

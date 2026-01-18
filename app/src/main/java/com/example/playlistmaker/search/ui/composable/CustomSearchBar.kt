@@ -41,6 +41,7 @@ import com.example.playlistmaker.app.ui.theme.blue
 
 @Composable
 fun CustomSearchBar(
+    initialQuery: String,
     onQueryChanged: (String) -> Unit,
     onFocusChanged: (Boolean) -> Unit,
 ) {
@@ -48,17 +49,17 @@ fun CustomSearchBar(
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val keyBoardController = LocalSoftwareKeyboardController.current
-    var query by remember { mutableStateOf("") }
+    var query by remember { mutableStateOf(initialQuery) }
 
-    LaunchedEffect(isFocused, query) {
+    LaunchedEffect(isFocused) {
         onFocusChanged(isFocused)
-        onQueryChanged(query)
     }
 
     BasicTextField(
         value = query,
         onValueChange = { newValue ->
             query = newValue
+            onQueryChanged(newValue)
         },
         singleLine = true,
         textStyle = LocalTypography.current.searchText.copy(
@@ -114,9 +115,10 @@ fun CustomSearchBar(
                 if (query.isNotEmpty()) {
                     IconButton(
                         onClick = {
+                            query = ""
+                            onQueryChanged(query)
                             focusManager.clearFocus()
                             keyBoardController?.hide()
-                            query = ""
                         }
                     ) {
                         Icon(
@@ -143,6 +145,7 @@ fun CustomSearchBar(
 fun CustomSearchBarPreview() {
     PlaylistMakerTheme {
         CustomSearchBar(
+            "",
             onQueryChanged = {},
             onFocusChanged = {},
         )
@@ -154,6 +157,7 @@ fun CustomSearchBarPreview() {
 fun CustomSearchBarNightPreview() {
     PlaylistMakerTheme {
         CustomSearchBar(
+            "TEST",
             onQueryChanged = {},
             onFocusChanged = {},
         )

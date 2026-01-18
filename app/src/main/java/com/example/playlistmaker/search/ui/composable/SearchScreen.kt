@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -16,6 +17,7 @@ import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_NO
 import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.os.bundleOf
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.app.ui.theme.PlaylistMakerTheme
@@ -28,6 +30,7 @@ import com.example.playlistmaker.search.ui.entity.SearchState.PlaceHolder.Networ
 import com.example.playlistmaker.search.ui.entity.SearchState.PlaceHolder.NothingFound
 import com.example.playlistmaker.search.ui.viewModel.SearchViewModel
 import com.example.playlistmaker.util.ARGS_TRACK
+import com.example.playlistmaker.util.RETURNING_FROM_PLAYER
 
 @Composable
 fun SearchScreen(
@@ -37,11 +40,30 @@ fun SearchScreen(
     val state = viewModel?.observeSearchState()?.observeAsState()?.value
     val onItemClick = { track: Track ->
         viewModel?.onItemClicked(track)
+
+        navController?.currentBackStackEntry?.savedStateHandle
+            ?.set(RETURNING_FROM_PLAYER, true)
+
         navController?.navigate(
             R.id.action_searchComposeFragment_to_playerFragment,
             bundleOf(ARGS_TRACK to track)
         )
     }
+    val query = viewModel?.searchQuery?.collectAsState()?.value ?: ""
+
+    // Для принудительного показа результатов поиска после возврата с другого экрана
+    navController?.currentBackStackEntry?.savedStateHandle
+        ?.getLiveData<Boolean>(RETURNING_FROM_PLAYER)
+        ?.observe(LocalLifecycleOwner.current) { returning ->
+            if (returning) {
+                viewModel?.onReturnFromPlayer()
+
+                navController.currentBackStackEntry?.savedStateHandle?.set(
+                    RETURNING_FROM_PLAYER,
+                    false
+                )
+            }
+        }
 
     Scaffold(
         topBar = {
@@ -56,6 +78,7 @@ fun SearchScreen(
         ) {
 
             CustomSearchBar(
+                initialQuery = query,
                 onQueryChanged = { newQuery ->
                     viewModel?.onQueryChanged(newQuery)
                 },
@@ -74,9 +97,10 @@ fun SearchScreen(
                 is Empty -> {}
                 is History -> {
                     TrackList(
-                        state.trackHistory,
+                        items = state.trackHistory,
                         onItemCLicked = { track -> onItemClick(track) },
-                        true
+                        isHistory = true,
+                        onClearHistoryClicked = { viewModel.onClearHistoryButtonClicked() }
                     )
                 }
 
